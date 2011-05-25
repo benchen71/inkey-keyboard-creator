@@ -65,8 +65,10 @@ Public Class Form1
     Private Sub Form1_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         Dim result
         If projectchanged Then
-            result = MsgBox("Project has changed.  Are you sure you want to exit" + Chr(10) + "and lose all changes made to the current project?", MsgBoxStyle.YesNoCancel, "InKey Keyboard Creator")
-            If result <> Windows.Forms.DialogResult.Yes Then
+            result = Dialog4.ShowDialog
+            If result = Windows.Forms.DialogResult.Yes Then
+                SaveProject()
+            ElseIf result = Windows.Forms.DialogResult.Cancel Then
                 e.Cancel = True
             End If
         End If
@@ -75,10 +77,6 @@ Public Class Form1
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim temploop As Integer
         Dim parameters() As String
-        Dim LabelFontName As String
-        Dim OptionAltGr As String
-        Dim result As Boolean
-        Dim tempicon
 
         Key = New Button() {KeyBack, KeyGrave, KeyOne, KeyTwo, KeyThree, KeyFour, KeyFive, KeySix, KeySeven, KeyEight, KeyNine, KeyZero, KeyDash, KeyEquals, KeyReverseSolidus, _
         KeyQ, KeyW, KeyE, KeyR, KeyT, KeyY, KeyU, KeyI, KeyO, KeyP, KeyOpenBracket, KeyCloseBracket, _
@@ -137,140 +135,7 @@ Public Class Form1
         If parameters.Length > 1 Then
             If parameters(1) <> "" Then
                 OpenFileDialog1.FileName = parameters(1)
-                ButtonShift.Checked = False
-                ButtonCtrl.Checked = False
-                ButtonAlt.Checked = False
-                Using sr As StreamReader = New StreamReader(OpenFileDialog1.FileName)
-                    For temploop = 1 To NumKeys
-                        KeyContents(temploop) = sr.ReadLine()
-                        KeyContentsShift(temploop) = sr.ReadLine()
-                        KeyContentsCtrl(temploop) = sr.ReadLine()
-                        KeyContentsAlt(temploop) = sr.ReadLine()
-                        KeyContentsShiftCtrl(temploop) = sr.ReadLine()
-                        KeyContentsShiftAlt(temploop) = sr.ReadLine()
-                        KeyContentsCtrlAlt(temploop) = sr.ReadLine()
-                        KeyContentsShiftCtrlAlt(temploop) = sr.ReadLine()
-
-                        ' Load initial labels
-                        ' Need to double & character to make it appear in label
-                        KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
-                    Next
-                    Form3.TextBox1.Text = sr.ReadLine()
-                    Form3.TextBox2.Text = sr.ReadLine()
-                    Form3.TextBox3.Text = sr.ReadLine()
-                    Form3.TextBox4.Text = sr.ReadLine()
-                    Form3.TextBox5.Text = sr.ReadLine()
-                    Form3.TextBox6.Text = sr.ReadLine()
-                    LabelFontName = sr.ReadLine()
-                    If Not sr.EndOfStream Then
-                        ' Project fileformat 1.4 (and later)
-                        For temploop = 1 To NumKeys
-                            KeyRotaSuppress(temploop) = sr.ReadLine()
-                            KeyRotaSuppressShift(temploop) = sr.ReadLine()
-                            KeyRotaSuppressCtrl(temploop) = sr.ReadLine()
-                            KeyRotaSuppressAlt(temploop) = sr.ReadLine()
-                            KeyRotaSuppressShiftCtrl(temploop) = sr.ReadLine()
-                            KeyRotaSuppressShiftAlt(temploop) = sr.ReadLine()
-                            KeyRotaSuppressCtrlAlt(temploop) = sr.ReadLine()
-                            KeyRotaSuppressShiftCtrlAlt(temploop) = sr.ReadLine()
-                        Next
-                    Else
-                        ' Project fileformat earlier than 1.4
-                        For temploop = 1 To NumKeys
-                            KeyRotaSuppress(temploop) = False
-                            KeyRotaSuppressShift(temploop) = False
-                            KeyRotaSuppressCtrl(temploop) = False
-                            KeyRotaSuppressAlt(temploop) = False
-                            KeyRotaSuppressShiftCtrl(temploop) = False
-                            KeyRotaSuppressShiftAlt(temploop) = False
-                            KeyRotaSuppressCtrlAlt(temploop) = False
-                            KeyRotaSuppressShiftCtrlAlt(temploop) = False
-                        Next
-                    End If
-                    If Not sr.EndOfStream Then
-                        ' Project fileformat 1.8 (and later)
-                        For temploop = 1 To NumKeys
-                            KeyContentsAltGr(temploop) = sr.ReadLine()
-                            KeyContentsShiftAltGr(temploop) = sr.ReadLine()
-                            KeyContentsCtrlAltGr(temploop) = sr.ReadLine()
-                            KeyContentsShiftCtrlAltGr(temploop) = sr.ReadLine()
-                        Next
-                        For temploop = 1 To NumKeys
-                            KeyRotaSuppressAltGr(temploop) = sr.ReadLine()
-                            KeyRotaSuppressShiftAltGr(temploop) = sr.ReadLine()
-                            KeyRotaSuppressCtrlAltGr(temploop) = sr.ReadLine()
-                            KeyRotaSuppressShiftCtrlAltGr(temploop) = sr.ReadLine()
-                        Next
-                    Else
-                        ' Project fileformat earlier than 1.8
-                        For temploop = 1 To NumKeys
-                            KeyContentsAltGr(temploop) = ""
-                            KeyContentsShiftAltGr(temploop) = ""
-                            KeyContentsCtrlAltGr(temploop) = ""
-                            KeyContentsShiftCtrlAltGr(temploop) = ""
-                        Next
-                        For temploop = 1 To NumKeys
-                            KeyRotaSuppressAltGr(temploop) = False
-                            KeyRotaSuppressShiftAltGr(temploop) = False
-                            KeyRotaSuppressCtrlAltGr(temploop) = False
-                            KeyRotaSuppressShiftCtrlAltGr(temploop) = False
-                        Next
-                    End If
-                    If Not sr.EndOfStream Then
-                        ' Project fileformat 1.8.3 (and later)
-                        OptionAltGr = sr.ReadLine()
-                    Else
-                        OptionAltGr = "Alt/AltGr"
-                    End If
-
-                    If OptionAltGr = "LAlt/RAlt" Then
-                        ButtonAlt.Text = "LAlt"
-                        ButtonAltGr.Text = "RAlt"
-                        ToggleAltAltGrToLAltRAltToolStripMenuItem.Text = "Toggle LAlt/RAlt to Alt/AltGr"
-                        AltGr = False
-                    Else
-                        ButtonAlt.Text = "Alt"
-                        ButtonAltGr.Text = "AltGr"
-                        ToggleAltAltGrToLAltRAltToolStripMenuItem.Text = "Toggle Alt/AltGr to LAlt/RAlt"
-                        AltGr = True
-                    End If
-
-                    LabelFont = New Font(LabelFontName, 10, FontStyle.Regular)
-                    TextFont = New Font(LabelFontName, 16, FontStyle.Regular)
-                    For temploop = 1 To NumKeys
-                        KeyLabel(temploop).Font = LabelFont
-                    Next temploop
-                    Dialog1.TextBox1.Font = TextFont
-                    TextBox1.Font = TextFont
-                    result = inthelist(Form3.TextBox4.Text)
-                    If result = False Then
-                        Form3.Button2.Enabled = True
-                    Else
-                        Form3.TextBox5.Text = ""
-                        Form3.Button2.Enabled = False
-                    End If
-                    If Form3.TextBox6.Text <> "" Then
-                        If System.IO.File.Exists(Form3.TextBox6.Text) Then
-                            tempicon = New System.Drawing.Icon(Form3.TextBox6.Text)
-                            Dim bmp As Bitmap = tempicon.ToBitmap()
-                            Form3.PictureBox1.Image = bmp
-                        Else
-                            MsgBox("Warning: Cannot find the icon file used in this ikp file." + Chr(10) + "Please relocate the appropriate icon.", MsgBoxStyle.OkOnly, "InKey Keyboard Creator")
-                            Form3.TextBox6.Text = ""
-                            Form3.PictureBox1.Image = Nothing
-                        End If
-                    Else
-                        Form3.PictureBox1.Image = Nothing
-                    End If
-                    projectchanged = False
-                    SaveFileDialog1.FileName = OpenFileDialog1.FileName
-                    SaveProjectToolStripMenuItem1.Enabled = False
-                    If Form3.TextBox1.Text <> "" Then
-                        Me.Text = Form3.TextBox1.Text + " - InKey Keyboard Creator"
-                    Else
-                        Me.Text = "Untitled - InKey Keyboard Creator"
-                    End If
-                End Using
+                LoadProject()
             End If
         End If
     End Sub
@@ -516,8 +381,11 @@ Public Class Form1
     Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExitToolStripMenuItem.Click
         Dim result
         If projectchanged Then
-            result = MsgBox("Project has changed.  Are you sure you want to exit" + Chr(10) + "and lose all changes made to the current project?", MsgBoxStyle.YesNoCancel, "InKey Keyboard Creator")
+            result = Dialog4.ShowDialog
             If result = Windows.Forms.DialogResult.Yes Then
+                SaveProject()
+                End
+            ElseIf result = Windows.Forms.DialogResult.No Then
                 End
             End If
         Else
@@ -616,133 +484,23 @@ Public Class Form1
     End Sub
 
     Private Sub SaveProjectToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveProjectToolStripMenuItem.Click
-        Dim temploop As Integer
-
         SaveFileDialog1.Filter = "InKeyProject Files (*.ikp)|*.ikp|All files (*.*)|*.*"
         SaveFileDialog1.FilterIndex = 1
         If SaveFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
-            Using sw As StreamWriter = New StreamWriter(SaveFileDialog1.OpenFile())
-                For temploop = 1 To NumKeys
-                    sw.WriteLine(KeyContents(temploop))
-                    sw.WriteLine(KeyContentsShift(temploop))
-                    sw.WriteLine(KeyContentsCtrl(temploop))
-                    sw.WriteLine(KeyContentsAlt(temploop))
-                    sw.WriteLine(KeyContentsShiftCtrl(temploop))
-                    sw.WriteLine(KeyContentsShiftAlt(temploop))
-                    sw.WriteLine(KeyContentsCtrlAlt(temploop))
-                    sw.WriteLine(KeyContentsShiftCtrlAlt(temploop))
-                Next
-                sw.WriteLine(Form3.TextBox1.Text)
-                sw.WriteLine(Form3.TextBox2.Text)
-                sw.WriteLine(Form3.TextBox3.Text)
-                sw.WriteLine(Form3.TextBox4.Text)
-                sw.WriteLine(Form3.TextBox5.Text)
-                sw.WriteLine(Form3.TextBox6.Text)
-                sw.WriteLine(LabelFont.Name)
-                For temploop = 1 To NumKeys
-                    sw.WriteLine(KeyRotaSuppress(temploop))
-                    sw.WriteLine(KeyRotaSuppressShift(temploop))
-                    sw.WriteLine(KeyRotaSuppressCtrl(temploop))
-                    sw.WriteLine(KeyRotaSuppressAlt(temploop))
-                    sw.WriteLine(KeyRotaSuppressShiftCtrl(temploop))
-                    sw.WriteLine(KeyRotaSuppressShiftAlt(temploop))
-                    sw.WriteLine(KeyRotaSuppressCtrlAlt(temploop))
-                    sw.WriteLine(KeyRotaSuppressShiftCtrlAlt(temploop))
-                Next
-                For temploop = 1 To NumKeys
-                    sw.WriteLine(KeyContentsAltGr(temploop))
-                    sw.WriteLine(KeyContentsShiftAltGr(temploop))
-                    sw.WriteLine(KeyContentsCtrlAltGr(temploop))
-                    sw.WriteLine(KeyContentsShiftCtrlAltGr(temploop))
-                Next
-                For temploop = 1 To NumKeys
-                    sw.WriteLine(KeyRotaSuppressAltGr(temploop))
-                    sw.WriteLine(KeyRotaSuppressShiftAltGr(temploop))
-                    sw.WriteLine(KeyRotaSuppressCtrlAltGr(temploop))
-                    sw.WriteLine(KeyRotaSuppressShiftCtrlAltGr(temploop))
-                Next
-                If AltGr = True Then
-                    sw.WriteLine("Alt/AltGr")
-                Else
-                    sw.WriteLine("LAlt/RAlt")
-                End If
-            End Using
-            projectchanged = False
-            SaveProjectToolStripMenuItem1.Enabled = False
-            If Form3.TextBox1.Text <> "" Then
-                Me.Text = Form3.TextBox1.Text + " - InKey Keyboard Creator"
-            Else
-                Me.Text = "Untitled - InKey Keyboard Creator"
-            End If
+            SaveProject()
         End If
     End Sub
     Private Sub SaveProjectToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveProjectToolStripMenuItem1.Click
-        Dim temploop As Integer
-        Using sw As StreamWriter = New StreamWriter(SaveFileDialog1.OpenFile())
-            For temploop = 1 To NumKeys
-                sw.WriteLine(KeyContents(temploop))
-                sw.WriteLine(KeyContentsShift(temploop))
-                sw.WriteLine(KeyContentsCtrl(temploop))
-                sw.WriteLine(KeyContentsAlt(temploop))
-                sw.WriteLine(KeyContentsShiftCtrl(temploop))
-                sw.WriteLine(KeyContentsShiftAlt(temploop))
-                sw.WriteLine(KeyContentsCtrlAlt(temploop))
-                sw.WriteLine(KeyContentsShiftCtrlAlt(temploop))
-            Next
-            sw.WriteLine(Form3.TextBox1.Text)
-            sw.WriteLine(Form3.TextBox2.Text)
-            sw.WriteLine(Form3.TextBox3.Text)
-            sw.WriteLine(Form3.TextBox4.Text)
-            sw.WriteLine(Form3.TextBox5.Text)
-            sw.WriteLine(Form3.TextBox6.Text)
-            sw.WriteLine(LabelFont.Name)
-            For temploop = 1 To NumKeys
-                sw.WriteLine(KeyRotaSuppress(temploop))
-                sw.WriteLine(KeyRotaSuppressShift(temploop))
-                sw.WriteLine(KeyRotaSuppressCtrl(temploop))
-                sw.WriteLine(KeyRotaSuppressAlt(temploop))
-                sw.WriteLine(KeyRotaSuppressShiftCtrl(temploop))
-                sw.WriteLine(KeyRotaSuppressShiftAlt(temploop))
-                sw.WriteLine(KeyRotaSuppressCtrlAlt(temploop))
-                sw.WriteLine(KeyRotaSuppressShiftCtrlAlt(temploop))
-            Next
-            For temploop = 1 To NumKeys
-                sw.WriteLine(KeyContentsAltGr(temploop))
-                sw.WriteLine(KeyContentsShiftAltGr(temploop))
-                sw.WriteLine(KeyContentsCtrlAltGr(temploop))
-                sw.WriteLine(KeyContentsShiftCtrlAltGr(temploop))
-            Next
-            For temploop = 1 To NumKeys
-                sw.WriteLine(KeyRotaSuppressAltGr(temploop))
-                sw.WriteLine(KeyRotaSuppressShiftAltGr(temploop))
-                sw.WriteLine(KeyRotaSuppressCtrlAltGr(temploop))
-                sw.WriteLine(KeyRotaSuppressShiftCtrlAltGr(temploop))
-            Next
-            If AltGr = True Then
-                sw.WriteLine("Alt/AltGr")
-            Else
-                sw.WriteLine("LAlt/RAlt")
-            End If
-        End Using
-        projectchanged = False
-        SaveProjectToolStripMenuItem1.Enabled = False
-        If Form3.TextBox1.Text <> "" Then
-            Me.Text = Form3.TextBox1.Text + " - InKey Keyboard Creator"
-        Else
-            Me.Text = "Untitled - InKey Keyboard Creator"
-        End If
+        SaveProject()
     End Sub
     Private Sub OpenProjectToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OpenProjectToolStripMenuItem.Click
-        Dim temploop As Integer
-        Dim LabelFontName As String
-        Dim OptionAltGr As String
-        Dim result As Boolean
         Dim dialogresult
-        Dim tempicon
 
         If projectchanged Then
-            dialogresult = MsgBox("Project has changed.  Are you sure you want to open another project" + Chr(10) + "and lose all changes made to the current project?", MsgBoxStyle.YesNoCancel, "InKey Keyboard Creator")
-            If dialogresult <> Windows.Forms.DialogResult.Yes Then
+            dialogresult = Dialog4.ShowDialog
+            If dialogresult = Windows.Forms.DialogResult.Yes Then
+                SaveProject()
+            ElseIf dialogresult = Windows.Forms.DialogResult.Cancel Then
                 Exit Sub
             End If
         End If
@@ -751,137 +509,7 @@ Public Class Form1
         OpenFileDialog1.FilterIndex = 1
         OpenFileDialog1.FileName = ""
         If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
-            ButtonShift.Checked = False
-            ButtonCtrl.Checked = False
-            ButtonAlt.Checked = False
-            Using sr As StreamReader = New StreamReader(OpenFileDialog1.OpenFile())
-                For temploop = 1 To NumKeys
-                    KeyContents(temploop) = sr.ReadLine()
-                    KeyContentsShift(temploop) = sr.ReadLine()
-                    KeyContentsCtrl(temploop) = sr.ReadLine()
-                    KeyContentsAlt(temploop) = sr.ReadLine()
-                    KeyContentsShiftCtrl(temploop) = sr.ReadLine()
-                    KeyContentsShiftAlt(temploop) = sr.ReadLine()
-                    KeyContentsCtrlAlt(temploop) = sr.ReadLine()
-                    KeyContentsShiftCtrlAlt(temploop) = sr.ReadLine()
-                    KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
-                Next
-                Form3.TextBox1.Text = sr.ReadLine()
-                Form3.TextBox2.Text = sr.ReadLine()
-                Form3.TextBox3.Text = sr.ReadLine()
-                Form3.TextBox4.Text = sr.ReadLine()
-                Form3.TextBox5.Text = sr.ReadLine()
-                Form3.TextBox6.Text = sr.ReadLine()
-                LabelFontName = sr.ReadLine()
-                If Not sr.EndOfStream Then
-                    ' Project fileformat 1.4
-                    For temploop = 1 To NumKeys
-                        KeyRotaSuppress(temploop) = sr.ReadLine()
-                        KeyRotaSuppressShift(temploop) = sr.ReadLine()
-                        KeyRotaSuppressCtrl(temploop) = sr.ReadLine()
-                        KeyRotaSuppressAlt(temploop) = sr.ReadLine()
-                        KeyRotaSuppressShiftCtrl(temploop) = sr.ReadLine()
-                        KeyRotaSuppressShiftAlt(temploop) = sr.ReadLine()
-                        KeyRotaSuppressCtrlAlt(temploop) = sr.ReadLine()
-                        KeyRotaSuppressShiftCtrlAlt(temploop) = sr.ReadLine()
-                    Next
-                Else
-                    ' Project fileformat earlier than 1.4
-                    For temploop = 1 To NumKeys
-                        KeyRotaSuppress(temploop) = False
-                        KeyRotaSuppressShift(temploop) = False
-                        KeyRotaSuppressCtrl(temploop) = False
-                        KeyRotaSuppressAlt(temploop) = False
-                        KeyRotaSuppressShiftCtrl(temploop) = False
-                        KeyRotaSuppressShiftAlt(temploop) = False
-                        KeyRotaSuppressCtrlAlt(temploop) = False
-                        KeyRotaSuppressShiftCtrlAlt(temploop) = False
-                    Next
-                End If
-                If Not sr.EndOfStream Then
-                    ' Project fileformat 1.8 (and later)
-                    For temploop = 1 To NumKeys
-                        KeyContentsAltGr(temploop) = sr.ReadLine()
-                        KeyContentsShiftAltGr(temploop) = sr.ReadLine()
-                        KeyContentsCtrlAltGr(temploop) = sr.ReadLine()
-                        KeyContentsShiftCtrlAltGr(temploop) = sr.ReadLine()
-                    Next
-                    For temploop = 1 To NumKeys
-                        KeyRotaSuppressAltGr(temploop) = sr.ReadLine()
-                        KeyRotaSuppressShiftAltGr(temploop) = sr.ReadLine()
-                        KeyRotaSuppressCtrlAltGr(temploop) = sr.ReadLine()
-                        KeyRotaSuppressShiftCtrlAltGr(temploop) = sr.ReadLine()
-                    Next
-                Else
-                    ' Project fileformat earlier than 1.8
-                    For temploop = 1 To NumKeys
-                        KeyContentsAltGr(temploop) = ""
-                        KeyContentsShiftAltGr(temploop) = ""
-                        KeyContentsCtrlAltGr(temploop) = ""
-                        KeyContentsShiftCtrlAltGr(temploop) = ""
-                    Next
-                    For temploop = 1 To NumKeys
-                        KeyRotaSuppressAltGr(temploop) = False
-                        KeyRotaSuppressShiftAltGr(temploop) = False
-                        KeyRotaSuppressCtrlAltGr(temploop) = False
-                        KeyRotaSuppressShiftCtrlAltGr(temploop) = False
-                    Next
-                End If
-                If Not sr.EndOfStream Then
-                    ' Project fileformat 1.8.3 (and later)
-                    OptionAltGr = sr.ReadLine()
-                Else
-                    OptionAltGr = "Alt/AltGr"
-                End If
-
-                If OptionAltGr = "LAlt/RAlt" Then
-                    ButtonAlt.Text = "LAlt"
-                    ButtonAltGr.Text = "RAlt"
-                    ToggleAltAltGrToLAltRAltToolStripMenuItem.Text = "Toggle LAlt/RAlt to Alt/AltGr"
-                    AltGr = False
-                Else
-                    ButtonAlt.Text = "Alt"
-                    ButtonAltGr.Text = "AltGr"
-                    ToggleAltAltGrToLAltRAltToolStripMenuItem.Text = "Toggle Alt/AltGr to LAlt/RAlt"
-                    AltGr = True
-                End If
-
-                LabelFont = New Font(LabelFontName, 10, FontStyle.Regular)
-                TextFont = New Font(LabelFontName, 16, FontStyle.Regular)
-                For temploop = 1 To NumKeys
-                    KeyLabel(temploop).Font = LabelFont
-                Next temploop
-                Dialog1.TextBox1.Font = TextFont
-                TextBox1.Font = TextFont
-                result = inthelist(Form3.TextBox4.Text)
-                If result = False Then
-                    Form3.Button2.Enabled = True
-                Else
-                    Form3.TextBox5.Text = ""
-                    Form3.Button2.Enabled = False
-                End If
-                If Form3.TextBox6.Text <> "" Then
-                    If System.IO.File.Exists(Form3.TextBox6.Text) Then
-                        tempicon = New System.Drawing.Icon(Form3.TextBox6.Text)
-                        Dim bmp As Bitmap = tempicon.ToBitmap()
-                        Form3.PictureBox1.Image = bmp
-                    Else
-                        MsgBox("Warning: Cannot find the icon file used in this ikp file." + Chr(10) + "Please relocate the appropriate icon.", MsgBoxStyle.OkOnly, "InKey Keyboard Creator")
-                        Form3.TextBox6.Text = ""
-                        Form3.PictureBox1.Image = Nothing
-                    End If
-                Else
-                    Form3.PictureBox1.Image = Nothing
-                End If
-                projectchanged = False
-                SaveFileDialog1.FileName = OpenFileDialog1.FileName
-                SaveProjectToolStripMenuItem1.Enabled = False
-                If Form3.TextBox1.Text <> "" Then
-                    Me.Text = Form3.TextBox1.Text + " - InKey Keyboard Creator"
-                Else
-                    Me.Text = "Untitled - InKey Keyboard Creator"
-                End If
-            End Using
+            LoadProject()
         End If
     End Sub
 
@@ -890,8 +518,10 @@ Public Class Form1
         Dim dialogresult
 
         If projectchanged Then
-            dialogresult = MsgBox("Project has changed.  Are you sure you want to start a new project" + Chr(10) + "and lose all changes made to the current project?", MsgBoxStyle.YesNoCancel, "InKey Keyboard Creator")
-            If dialogresult <> Windows.Forms.DialogResult.Yes Then
+            dialogresult = Dialog4.ShowDialog
+            If dialogresult = Windows.Forms.DialogResult.Yes Then
+                SaveProject()
+            ElseIf dialogresult = Windows.Forms.DialogResult.Cancel Then
                 Exit Sub
             End If
         End If
@@ -2609,8 +2239,10 @@ Public Class Form1
         Dim unassigned As String
 
         If projectchanged Then
-            dialogresult = MsgBox("Project has changed.  Are you sure you want to attempt to import from a KMN file" + Chr(10) + "and lose all changes made to the current project?", MsgBoxStyle.YesNoCancel, "InKey Keyboard Creator")
-            If dialogresult <> Windows.Forms.DialogResult.Yes Then
+            dialogresult = Dialog4.ShowDialog
+            If dialogresult = Windows.Forms.DialogResult.Yes Then
+                SaveProject()
+            ElseIf dialogresult = Windows.Forms.DialogResult.Cancel Then
                 Exit Sub
             End If
         End If
@@ -3233,5 +2865,203 @@ Public Class Form1
         Else
             Me.Text = "*Untitled - InKey Keyboard Creator"
         End If
+    End Sub
+    Private Sub SaveProject()
+        Dim temploop As Integer
+        Using sw As StreamWriter = New StreamWriter(SaveFileDialog1.OpenFile())
+            For temploop = 1 To NumKeys
+                sw.WriteLine(KeyContents(temploop))
+                sw.WriteLine(KeyContentsShift(temploop))
+                sw.WriteLine(KeyContentsCtrl(temploop))
+                sw.WriteLine(KeyContentsAlt(temploop))
+                sw.WriteLine(KeyContentsShiftCtrl(temploop))
+                sw.WriteLine(KeyContentsShiftAlt(temploop))
+                sw.WriteLine(KeyContentsCtrlAlt(temploop))
+                sw.WriteLine(KeyContentsShiftCtrlAlt(temploop))
+            Next
+            sw.WriteLine(Form3.TextBox1.Text)
+            sw.WriteLine(Form3.TextBox2.Text)
+            sw.WriteLine(Form3.TextBox3.Text)
+            sw.WriteLine(Form3.TextBox4.Text)
+            sw.WriteLine(Form3.TextBox5.Text)
+            sw.WriteLine(Form3.TextBox6.Text)
+            sw.WriteLine(LabelFont.Name)
+            For temploop = 1 To NumKeys
+                sw.WriteLine(KeyRotaSuppress(temploop))
+                sw.WriteLine(KeyRotaSuppressShift(temploop))
+                sw.WriteLine(KeyRotaSuppressCtrl(temploop))
+                sw.WriteLine(KeyRotaSuppressAlt(temploop))
+                sw.WriteLine(KeyRotaSuppressShiftCtrl(temploop))
+                sw.WriteLine(KeyRotaSuppressShiftAlt(temploop))
+                sw.WriteLine(KeyRotaSuppressCtrlAlt(temploop))
+                sw.WriteLine(KeyRotaSuppressShiftCtrlAlt(temploop))
+            Next
+            For temploop = 1 To NumKeys
+                sw.WriteLine(KeyContentsAltGr(temploop))
+                sw.WriteLine(KeyContentsShiftAltGr(temploop))
+                sw.WriteLine(KeyContentsCtrlAltGr(temploop))
+                sw.WriteLine(KeyContentsShiftCtrlAltGr(temploop))
+            Next
+            For temploop = 1 To NumKeys
+                sw.WriteLine(KeyRotaSuppressAltGr(temploop))
+                sw.WriteLine(KeyRotaSuppressShiftAltGr(temploop))
+                sw.WriteLine(KeyRotaSuppressCtrlAltGr(temploop))
+                sw.WriteLine(KeyRotaSuppressShiftCtrlAltGr(temploop))
+            Next
+            If AltGr = True Then
+                sw.WriteLine("Alt/AltGr")
+            Else
+                sw.WriteLine("LAlt/RAlt")
+            End If
+        End Using
+        projectchanged = False
+        SaveProjectToolStripMenuItem1.Enabled = False
+        If Form3.TextBox1.Text <> "" Then
+            Me.Text = Form3.TextBox1.Text + " - InKey Keyboard Creator"
+        Else
+            Me.Text = "Untitled - InKey Keyboard Creator"
+        End If
+    End Sub
+    Private Sub LoadProject()
+        Dim LabelFontName As String
+        Dim OptionAltGr As String
+        Dim result As Boolean
+        Dim tempicon
+        Dim temploop As Integer
+
+        ButtonShift.Checked = False
+        ButtonCtrl.Checked = False
+        ButtonAlt.Checked = False
+        Using sr As StreamReader = New StreamReader(OpenFileDialog1.FileName)
+            For temploop = 1 To NumKeys
+                KeyContents(temploop) = sr.ReadLine()
+                KeyContentsShift(temploop) = sr.ReadLine()
+                KeyContentsCtrl(temploop) = sr.ReadLine()
+                KeyContentsAlt(temploop) = sr.ReadLine()
+                KeyContentsShiftCtrl(temploop) = sr.ReadLine()
+                KeyContentsShiftAlt(temploop) = sr.ReadLine()
+                KeyContentsCtrlAlt(temploop) = sr.ReadLine()
+                KeyContentsShiftCtrlAlt(temploop) = sr.ReadLine()
+
+                ' Load initial labels
+                ' Need to double & character to make it appear in label
+                KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
+            Next
+            Form3.TextBox1.Text = sr.ReadLine()
+            Form3.TextBox2.Text = sr.ReadLine()
+            Form3.TextBox3.Text = sr.ReadLine()
+            Form3.TextBox4.Text = sr.ReadLine()
+            Form3.TextBox5.Text = sr.ReadLine()
+            Form3.TextBox6.Text = sr.ReadLine()
+            LabelFontName = sr.ReadLine()
+            If Not sr.EndOfStream Then
+                ' Project fileformat 1.4 (and later)
+                For temploop = 1 To NumKeys
+                    KeyRotaSuppress(temploop) = sr.ReadLine()
+                    KeyRotaSuppressShift(temploop) = sr.ReadLine()
+                    KeyRotaSuppressCtrl(temploop) = sr.ReadLine()
+                    KeyRotaSuppressAlt(temploop) = sr.ReadLine()
+                    KeyRotaSuppressShiftCtrl(temploop) = sr.ReadLine()
+                    KeyRotaSuppressShiftAlt(temploop) = sr.ReadLine()
+                    KeyRotaSuppressCtrlAlt(temploop) = sr.ReadLine()
+                    KeyRotaSuppressShiftCtrlAlt(temploop) = sr.ReadLine()
+                Next
+            Else
+                ' Project fileformat earlier than 1.4
+                For temploop = 1 To NumKeys
+                    KeyRotaSuppress(temploop) = False
+                    KeyRotaSuppressShift(temploop) = False
+                    KeyRotaSuppressCtrl(temploop) = False
+                    KeyRotaSuppressAlt(temploop) = False
+                    KeyRotaSuppressShiftCtrl(temploop) = False
+                    KeyRotaSuppressShiftAlt(temploop) = False
+                    KeyRotaSuppressCtrlAlt(temploop) = False
+                    KeyRotaSuppressShiftCtrlAlt(temploop) = False
+                Next
+            End If
+            If Not sr.EndOfStream Then
+                ' Project fileformat 1.8 (and later)
+                For temploop = 1 To NumKeys
+                    KeyContentsAltGr(temploop) = sr.ReadLine()
+                    KeyContentsShiftAltGr(temploop) = sr.ReadLine()
+                    KeyContentsCtrlAltGr(temploop) = sr.ReadLine()
+                    KeyContentsShiftCtrlAltGr(temploop) = sr.ReadLine()
+                Next
+                For temploop = 1 To NumKeys
+                    KeyRotaSuppressAltGr(temploop) = sr.ReadLine()
+                    KeyRotaSuppressShiftAltGr(temploop) = sr.ReadLine()
+                    KeyRotaSuppressCtrlAltGr(temploop) = sr.ReadLine()
+                    KeyRotaSuppressShiftCtrlAltGr(temploop) = sr.ReadLine()
+                Next
+            Else
+                ' Project fileformat earlier than 1.8
+                For temploop = 1 To NumKeys
+                    KeyContentsAltGr(temploop) = ""
+                    KeyContentsShiftAltGr(temploop) = ""
+                    KeyContentsCtrlAltGr(temploop) = ""
+                    KeyContentsShiftCtrlAltGr(temploop) = ""
+                Next
+                For temploop = 1 To NumKeys
+                    KeyRotaSuppressAltGr(temploop) = False
+                    KeyRotaSuppressShiftAltGr(temploop) = False
+                    KeyRotaSuppressCtrlAltGr(temploop) = False
+                    KeyRotaSuppressShiftCtrlAltGr(temploop) = False
+                Next
+            End If
+            If Not sr.EndOfStream Then
+                ' Project fileformat 1.8.3 (and later)
+                OptionAltGr = sr.ReadLine()
+            Else
+                OptionAltGr = "Alt/AltGr"
+            End If
+
+            If OptionAltGr = "LAlt/RAlt" Then
+                ButtonAlt.Text = "LAlt"
+                ButtonAltGr.Text = "RAlt"
+                ToggleAltAltGrToLAltRAltToolStripMenuItem.Text = "Toggle LAlt/RAlt to Alt/AltGr"
+                AltGr = False
+            Else
+                ButtonAlt.Text = "Alt"
+                ButtonAltGr.Text = "AltGr"
+                ToggleAltAltGrToLAltRAltToolStripMenuItem.Text = "Toggle Alt/AltGr to LAlt/RAlt"
+                AltGr = True
+            End If
+
+            LabelFont = New Font(LabelFontName, 10, FontStyle.Regular)
+            TextFont = New Font(LabelFontName, 16, FontStyle.Regular)
+            For temploop = 1 To NumKeys
+                KeyLabel(temploop).Font = LabelFont
+            Next temploop
+            Dialog1.TextBox1.Font = TextFont
+            TextBox1.Font = TextFont
+            result = inthelist(Form3.TextBox4.Text)
+            If result = False Then
+                Form3.Button2.Enabled = True
+            Else
+                Form3.TextBox5.Text = ""
+                Form3.Button2.Enabled = False
+            End If
+            If Form3.TextBox6.Text <> "" Then
+                If System.IO.File.Exists(Form3.TextBox6.Text) Then
+                    tempicon = New System.Drawing.Icon(Form3.TextBox6.Text)
+                    Dim bmp As Bitmap = tempicon.ToBitmap()
+                    Form3.PictureBox1.Image = bmp
+                Else
+                    MsgBox("Warning: Cannot find the icon file used in this ikp file." + Chr(10) + "Please relocate the appropriate icon.", MsgBoxStyle.OkOnly, "InKey Keyboard Creator")
+                    Form3.TextBox6.Text = ""
+                    Form3.PictureBox1.Image = Nothing
+                End If
+            Else
+                Form3.PictureBox1.Image = Nothing
+            End If
+            projectchanged = False
+            SaveFileDialog1.FileName = OpenFileDialog1.FileName
+            SaveProjectToolStripMenuItem1.Enabled = False
+            If Form3.TextBox1.Text <> "" Then
+                Me.Text = Form3.TextBox1.Text + " - InKey Keyboard Creator"
+            Else
+                Me.Text = "Untitled - InKey Keyboard Creator"
+            End If
+        End Using
     End Sub
 End Class
