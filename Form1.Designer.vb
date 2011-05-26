@@ -38,6 +38,7 @@ Partial Class Form1
         Me.AutoAddSpacesToExistingRotasToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ChangeFontToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToggleAltAltGrToLAltRAltToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.FontDialog1 = New System.Windows.Forms.FontDialog
@@ -154,12 +155,15 @@ Partial Class Form1
         Me.Label48 = New System.Windows.Forms.Label
         Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog
         Me.ButtonAltGr = New System.Windows.Forms.CheckBox
-        Me.ToggleAltAltGrToLAltRAltToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripSeparator
+        Me.ActivateDeadkeyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'KeyGrave
         '
+        Me.KeyGrave.FlatAppearance.BorderColor = System.Drawing.Color.Red
+        Me.KeyGrave.FlatAppearance.BorderSize = 3
         Me.KeyGrave.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.KeyGrave.Location = New System.Drawing.Point(12, 37)
         Me.KeyGrave.Name = "KeyGrave"
@@ -172,7 +176,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.OptionsToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1000, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1007, 24)
         Me.MenuStrip1.TabIndex = 1
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -180,7 +184,7 @@ Partial Class Form1
         '
         Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewProjectToolStripMenuItem, Me.OpenProjectToolStripMenuItem, Me.ToolStripMenuItem3, Me.SaveProjectToolStripMenuItem1, Me.SaveProjectToolStripMenuItem, Me.ToolStripMenuItem1, Me.AttemptToImportFromKeymanSourceFileToolStripMenuItem, Me.ExportAsInKeyKeyboardFileToolStripMenuItem, Me.ToolStripMenuItem2, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
-        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(40, 20)
+        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "File"
         '
         'NewProjectToolStripMenuItem
@@ -248,24 +252,24 @@ Partial Class Form1
         '
         Me.EditToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConfigureKeyboardToolStripMenuItem, Me.AutoAddSpacesToExistingRotasToolStripMenuItem})
         Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
-        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(40, 20)
+        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(39, 20)
         Me.EditToolStripMenuItem.Text = "Edit"
         '
         'ConfigureKeyboardToolStripMenuItem
         '
         Me.ConfigureKeyboardToolStripMenuItem.Name = "ConfigureKeyboardToolStripMenuItem"
-        Me.ConfigureKeyboardToolStripMenuItem.Size = New System.Drawing.Size(257, 22)
+        Me.ConfigureKeyboardToolStripMenuItem.Size = New System.Drawing.Size(255, 22)
         Me.ConfigureKeyboardToolStripMenuItem.Text = "Configure Keyboard Settings..."
         '
         'AutoAddSpacesToExistingRotasToolStripMenuItem
         '
         Me.AutoAddSpacesToExistingRotasToolStripMenuItem.Name = "AutoAddSpacesToExistingRotasToolStripMenuItem"
-        Me.AutoAddSpacesToExistingRotasToolStripMenuItem.Size = New System.Drawing.Size(257, 22)
+        Me.AutoAddSpacesToExistingRotasToolStripMenuItem.Size = New System.Drawing.Size(255, 22)
         Me.AutoAddSpacesToExistingRotasToolStripMenuItem.Text = "Auto-Add Spaces to Existing Rotas"
         '
         'OptionsToolStripMenuItem
         '
-        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ChangeFontToolStripMenuItem, Me.ToggleAltAltGrToLAltRAltToolStripMenuItem})
+        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ChangeFontToolStripMenuItem, Me.ToggleAltAltGrToLAltRAltToolStripMenuItem, Me.ToolStripMenuItem4, Me.ActivateDeadkeyToolStripMenuItem})
         Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
         Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
         Me.OptionsToolStripMenuItem.Text = "Options"
@@ -273,20 +277,26 @@ Partial Class Form1
         'ChangeFontToolStripMenuItem
         '
         Me.ChangeFontToolStripMenuItem.Name = "ChangeFontToolStripMenuItem"
-        Me.ChangeFontToolStripMenuItem.Size = New System.Drawing.Size(223, 22)
+        Me.ChangeFontToolStripMenuItem.Size = New System.Drawing.Size(226, 22)
         Me.ChangeFontToolStripMenuItem.Text = "Change Key Font..."
+        '
+        'ToggleAltAltGrToLAltRAltToolStripMenuItem
+        '
+        Me.ToggleAltAltGrToLAltRAltToolStripMenuItem.Name = "ToggleAltAltGrToLAltRAltToolStripMenuItem"
+        Me.ToggleAltAltGrToLAltRAltToolStripMenuItem.Size = New System.Drawing.Size(226, 22)
+        Me.ToggleAltAltGrToLAltRAltToolStripMenuItem.Text = "Toggle Alt/AltGr to LAlt/RAlt"
         '
         'HelpToolStripMenuItem
         '
         Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutToolStripMenuItem})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
-        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(45, 20)
+        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
         '
         'AboutToolStripMenuItem
         '
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(115, 22)
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(116, 22)
         Me.AboutToolStripMenuItem.Text = "About..."
         '
         'ButtonShift
@@ -1362,17 +1372,22 @@ Partial Class Form1
         Me.ButtonAltGr.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.ButtonAltGr.UseVisualStyleBackColor = True
         '
-        'ToggleAltAltGrToLAltRAltToolStripMenuItem
+        'ToolStripMenuItem4
         '
-        Me.ToggleAltAltGrToLAltRAltToolStripMenuItem.Name = "ToggleAltAltGrToLAltRAltToolStripMenuItem"
-        Me.ToggleAltAltGrToLAltRAltToolStripMenuItem.Size = New System.Drawing.Size(223, 22)
-        Me.ToggleAltAltGrToLAltRAltToolStripMenuItem.Text = "Toggle Alt/AltGr to LAlt/RAlt"
+        Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
+        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(223, 6)
+        '
+        'ActivateDeadkeyToolStripMenuItem
+        '
+        Me.ActivateDeadkeyToolStripMenuItem.Name = "ActivateDeadkeyToolStripMenuItem"
+        Me.ActivateDeadkeyToolStripMenuItem.Size = New System.Drawing.Size(226, 22)
+        Me.ActivateDeadkeyToolStripMenuItem.Text = "Deadkey"
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1000, 427)
+        Me.ClientSize = New System.Drawing.Size(1007, 427)
         Me.Controls.Add(Me.ButtonAltGr)
         Me.Controls.Add(Me.Label48)
         Me.Controls.Add(Me.TextBox1)
@@ -1633,5 +1648,7 @@ Partial Class Form1
     Friend WithEvents AboutToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ButtonAltGr As System.Windows.Forms.CheckBox
     Friend WithEvents ToggleAltAltGrToLAltRAltToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem4 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ActivateDeadkeyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class
