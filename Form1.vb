@@ -158,6 +158,7 @@ Public Class Form1
         Dim checkedbefore As Boolean
         Dim radiobefore As Boolean
         Dim deadkeytextbefore As String
+        Dim result
 
         KeyNumber = GetKeyNumberFromName(btn.Name)
         KeyName = GetShortNameFromName(btn.Name)
@@ -254,7 +255,9 @@ Public Class Form1
         deadkeytextbefore = Dialog1.TextBox2.Text
 
         ' Show dialog box
-        Dialog1.ShowDialog()
+        result = Dialog1.ShowDialog()
+        If result = System.Windows.Forms.DialogResult.Cancel Then Exit Sub
+
         If ((ButtonShift.Checked = False) And (ButtonAlt.Checked = False) And (ButtonCtrl.Checked = False)) Then
             ' Unshifted deadkey can only output deadkey flag
             If Dialog1.RadioButton1.Checked = True Then Dialog1.TextBox1.Text = ""
