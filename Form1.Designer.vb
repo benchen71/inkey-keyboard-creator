@@ -39,6 +39,8 @@ Partial Class Form1
         Me.OptionsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ChangeFontToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToggleAltAltGrToLAltRAltToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripSeparator
+        Me.ActivateDeadkeyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.FontDialog1 = New System.Windows.Forms.FontDialog
@@ -155,8 +157,7 @@ Partial Class Form1
         Me.Label48 = New System.Windows.Forms.Label
         Me.SaveFileDialog2 = New System.Windows.Forms.SaveFileDialog
         Me.ButtonAltGr = New System.Windows.Forms.CheckBox
-        Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripSeparator
-        Me.ActivateDeadkeyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.DeadkeysToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -269,7 +270,7 @@ Partial Class Form1
         '
         'OptionsToolStripMenuItem
         '
-        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ChangeFontToolStripMenuItem, Me.ToggleAltAltGrToLAltRAltToolStripMenuItem, Me.ToolStripMenuItem4, Me.ActivateDeadkeyToolStripMenuItem})
+        Me.OptionsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ChangeFontToolStripMenuItem, Me.ToggleAltAltGrToLAltRAltToolStripMenuItem, Me.ToolStripMenuItem4, Me.ActivateDeadkeyToolStripMenuItem, Me.DeadkeysToolStripMenuItem})
         Me.OptionsToolStripMenuItem.Name = "OptionsToolStripMenuItem"
         Me.OptionsToolStripMenuItem.Size = New System.Drawing.Size(61, 20)
         Me.OptionsToolStripMenuItem.Text = "Options"
@@ -285,6 +286,17 @@ Partial Class Form1
         Me.ToggleAltAltGrToLAltRAltToolStripMenuItem.Name = "ToggleAltAltGrToLAltRAltToolStripMenuItem"
         Me.ToggleAltAltGrToLAltRAltToolStripMenuItem.Size = New System.Drawing.Size(226, 22)
         Me.ToggleAltAltGrToLAltRAltToolStripMenuItem.Text = "Toggle Alt/AltGr to LAlt/RAlt"
+        '
+        'ToolStripMenuItem4
+        '
+        Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
+        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(223, 6)
+        '
+        'ActivateDeadkeyToolStripMenuItem
+        '
+        Me.ActivateDeadkeyToolStripMenuItem.Name = "ActivateDeadkeyToolStripMenuItem"
+        Me.ActivateDeadkeyToolStripMenuItem.Size = New System.Drawing.Size(226, 22)
+        Me.ActivateDeadkeyToolStripMenuItem.Text = "One Deadkey"
         '
         'HelpToolStripMenuItem
         '
@@ -1372,16 +1384,11 @@ Partial Class Form1
         Me.ButtonAltGr.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.ButtonAltGr.UseVisualStyleBackColor = True
         '
-        'ToolStripMenuItem4
+        'DeadkeysToolStripMenuItem
         '
-        Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
-        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(223, 6)
-        '
-        'ActivateDeadkeyToolStripMenuItem
-        '
-        Me.ActivateDeadkeyToolStripMenuItem.Name = "ActivateDeadkeyToolStripMenuItem"
-        Me.ActivateDeadkeyToolStripMenuItem.Size = New System.Drawing.Size(226, 22)
-        Me.ActivateDeadkeyToolStripMenuItem.Text = "Deadkey"
+        Me.DeadkeysToolStripMenuItem.Name = "DeadkeysToolStripMenuItem"
+        Me.DeadkeysToolStripMenuItem.Size = New System.Drawing.Size(226, 22)
+        Me.DeadkeysToolStripMenuItem.Text = "Two Deadkeys"
         '
         'Form1
         '
@@ -1650,5 +1657,6 @@ Partial Class Form1
     Friend WithEvents ToggleAltAltGrToLAltRAltToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem4 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ActivateDeadkeyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents DeadkeysToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

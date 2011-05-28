@@ -29,7 +29,10 @@ Public Class Form3
         TextBox3.Text = Trim(TextBox3.Text)
 
         result = ErrorHandling()
-        If result Then Me.Hide()
+        If result Then
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Hide()
+        End If
     End Sub
 
     Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
@@ -42,6 +45,7 @@ Public Class Form3
 
         If TextBox5.Text = "" Then Button2.Enabled = False
 
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Hide()
     End Sub
 

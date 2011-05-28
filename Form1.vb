@@ -36,8 +36,11 @@ Public Class Form1
     Dim AltGr As Boolean
     Dim DeadKeys As Boolean
     Dim DeadKey As Integer
+    Dim DeadKey2 As Integer
     Dim KeyContentsDeadkey As String()
     Dim KeyContentsDeadkeyShift As String()
+    Dim KeyContentsDeadkey2 As String()
+    Dim KeyContentsDeadkey2Shift As String()
 
     Private Sub ChangeFontToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChangeFontToolStripMenuItem.Click
         Dim temploop As Integer
@@ -134,10 +137,14 @@ Public Class Form1
         tempsize.Height = 404
         Me.Size = tempsize
         Dialog1.Width = 476
+        Dialog1.GroupBox1.Width = 157
         DeadKeys = False
         DeadKey = -1
+        DeadKey2 = -1
         KeyContentsDeadkey = New String() {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}
         KeyContentsDeadkeyShift = New String() {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}
+        KeyContentsDeadkey2 = New String() {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}
+        KeyContentsDeadkey2Shift = New String() {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""}
 
         ' Check for commandline parameter
         parameters = Environment.GetCommandLineArgs()
@@ -158,6 +165,8 @@ Public Class Form1
         Dim checkedbefore As Boolean
         Dim radiobefore As Boolean
         Dim deadkeytextbefore As String
+        Dim radio2before As Boolean
+        Dim deadkey2textbefore As String
         Dim result
 
         KeyNumber = GetKeyNumberFromName(btn.Name)
@@ -218,20 +227,32 @@ Public Class Form1
 
         ' Load Deadkey string (if any)
         Dialog1.TextBox2.Text = ""
+        Dialog1.TextBox3.Text = ""
         If ButtonCtrl.Checked = False And ButtonAlt.Checked = False Then
             Dialog1.TextBox2.Enabled = True
+            Dialog1.TextBox3.Enabled = True
             If ButtonShift.Checked Then
                 Dialog1.TextBox2.Text = KeyContentsDeadkeyShift(KeyNumber)
+                Dialog1.TextBox3.Text = KeyContentsDeadkey2Shift(KeyNumber)
             Else
                 Dialog1.TextBox2.Text = KeyContentsDeadkey(KeyNumber)
+                Dialog1.TextBox3.Text = KeyContentsDeadkey2(KeyNumber)
             End If
         Else
             Dialog1.TextBox2.Enabled = False
+            Dialog1.TextBox3.Enabled = False
         End If
 
         ' Show if this key is the Deadkey
-        If ((KeyNumber = DeadKey) And (DeadKeys)) Then
-            Dialog1.RadioButton1.Checked = True
+        If (((KeyNumber = DeadKey) Or (KeyNumber = DeadKey2)) And (DeadKeys)) Then
+            If (KeyNumber = DeadKey) Then
+                Dialog1.RadioButton1.Checked = True
+                Dialog1.RadioButton2.Checked = False
+            End If
+            If (KeyNumber = DeadKey2) Then
+                Dialog1.RadioButton2.Checked = True
+                Dialog1.RadioButton1.Checked = False
+            End If
             If ((ButtonShift.Checked = False) And (ButtonAlt.Checked = False) And (ButtonCtrl.Checked = False)) Then
                 Dialog1.TextBox1.Enabled = False
             Else
@@ -239,20 +260,25 @@ Public Class Form1
             End If
         Else
             Dialog1.RadioButton1.Checked = False
+            Dialog1.RadioButton2.Checked = False
             Dialog1.TextBox1.Enabled = True
         End If
 
         If ((ButtonShift.Checked = False) And (ButtonAlt.Checked = False) And (ButtonCtrl.Checked = False) And (DeadKeys)) Then
             ' Only time it is possible to change or choose deadkey
             Dialog1.RadioButton1.Enabled = True
+            Dialog1.RadioButton2.Enabled = True
         Else
             Dialog1.RadioButton1.Enabled = False
+            Dialog1.RadioButton2.Enabled = False
         End If
 
         textbefore = Dialog1.TextBox1.Text
         checkedbefore = Dialog1.CheckBox1.Checked
         radiobefore = Dialog1.RadioButton1.Checked
         deadkeytextbefore = Dialog1.TextBox2.Text
+        radio2before = Dialog1.RadioButton2.Checked
+        deadkey2textbefore = Dialog1.TextBox3.Text
 
         ' Show dialog box
         result = Dialog1.ShowDialog()
@@ -261,6 +287,7 @@ Public Class Form1
         If ((ButtonShift.Checked = False) And (ButtonAlt.Checked = False) And (ButtonCtrl.Checked = False)) Then
             ' Unshifted deadkey can only output deadkey flag
             If Dialog1.RadioButton1.Checked = True Then Dialog1.TextBox1.Text = ""
+            If Dialog1.RadioButton2.Checked = True Then Dialog1.TextBox1.Text = ""
         End If
 
         If Dialog1.TextBox1.Text <> textbefore Then
@@ -302,16 +329,7 @@ Public Class Form1
                     End If
                 End If
             End If
-            ' Need to double & character to make it appear in label
-            If DeadKeys Then
-                If Dialog1.TextBox2.Text <> "" Then
-                    KeyLabel(KeyNumber).Text = Dialog1.TextBox1.Text.Replace("&", "&&") + " (" + Dialog1.TextBox2.Text.Replace("&", "&&") + ")"
-                Else
-                    KeyLabel(KeyNumber).Text = Dialog1.TextBox1.Text.Replace("&", "&&")
-                End If
-            Else
-                KeyLabel(KeyNumber).Text = Dialog1.TextBox1.Text.Replace("&", "&&")
-            End If
+            RefreshLabels()
             projectchanged = True
             If SaveFileDialog1.FileName <> "" Then
                 SaveProjectToolStripMenuItem1.Enabled = True
@@ -375,17 +393,7 @@ Public Class Form1
             Else
                 KeyContentsDeadkey(KeyNumber) = Dialog1.TextBox2.Text
             End If
-
-            ' Need to double & character to make it appear in label
-            If DeadKeys Then
-                If Dialog1.TextBox2.Text <> "" Then
-                    KeyLabel(KeyNumber).Text = Dialog1.TextBox1.Text.Replace("&", "&&") + " (" + Dialog1.TextBox2.Text.Replace("&", "&&") + ")"
-                Else
-                    KeyLabel(KeyNumber).Text = Dialog1.TextBox1.Text.Replace("&", "&&")
-                End If
-            Else
-                KeyLabel(KeyNumber).Text = Dialog1.TextBox1.Text.Replace("&", "&&")
-            End If
+            RefreshLabels()
             projectchanged = True
             If SaveFileDialog1.FileName <> "" Then SaveProjectToolStripMenuItem1.Enabled = True
             If Form3.TextBox1.Text <> "" Then
@@ -396,17 +404,35 @@ Public Class Form1
         End If
         If radiobefore <> Dialog1.RadioButton1.Checked Then
             ' Deadkey has been changed
-
-            ' Reset key borders and color
-            ResetKeyBorders()
-
-            ' Apply indicator border to new deadkey
-            btn.FlatAppearance.BorderSize = 3
-            btn.FlatAppearance.BorderColor = Color.Red
-            btn.FlatStyle = FlatStyle.Flat
-
             DeadKey = KeyNumber
-
+            ResetKeyBorders()
+            projectchanged = True
+            If SaveFileDialog1.FileName <> "" Then SaveProjectToolStripMenuItem1.Enabled = True
+            If Form3.TextBox1.Text <> "" Then
+                Me.Text = "*" + Form3.TextBox1.Text + " - InKey Keyboard Creator"
+            Else
+                Me.Text = "*Untitled - InKey Keyboard Creator"
+            End If
+        End If
+        If Dialog1.TextBox3.Text <> deadkey2textbefore Then
+            If ButtonShift.Checked Then
+                KeyContentsDeadkey2Shift(KeyNumber) = Dialog1.TextBox3.Text
+            Else
+                KeyContentsDeadkey2(KeyNumber) = Dialog1.TextBox3.Text
+            End If
+            RefreshLabels()
+            projectchanged = True
+            If SaveFileDialog1.FileName <> "" Then SaveProjectToolStripMenuItem1.Enabled = True
+            If Form3.TextBox1.Text <> "" Then
+                Me.Text = "*" + Form3.TextBox1.Text + " - InKey Keyboard Creator"
+            Else
+                Me.Text = "*Untitled - InKey Keyboard Creator"
+            End If
+        End If
+        If radio2before <> Dialog1.RadioButton2.Checked Then
+            ' Deadkey has been changed
+            DeadKey2 = KeyNumber
+            ResetKeyBorders()
             projectchanged = True
             If SaveFileDialog1.FileName <> "" Then SaveProjectToolStripMenuItem1.Enabled = True
             If Form3.TextBox1.Text <> "" Then
@@ -469,125 +495,12 @@ Public Class Form1
     End Sub
 
     Private Sub ButtonCtrl_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCtrl.CheckedChanged
-        Dim temploop As Integer
-
-        For temploop = 1 To NumKeys
-            If ButtonShift.Checked Then
-                If ButtonCtrl.Checked Then
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrlAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrlAltGr(temploop).Replace("&", "&&")
-                    Else
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrl(temploop).Replace("&", "&&")
-                    End If
-                Else
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftAltGr(temploop).Replace("&", "&&")
-                    Else
-                        If DeadKeys Then
-                            If KeyContentsDeadkey(temploop) <> "" Then
-                                KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&") + " (" + KeyContentsDeadkeyShift(temploop).Replace("&", "&&") + ")"
-                            Else
-                                KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&")
-                            End If
-                        Else
-                            KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&")
-                        End If
-                    End If
-                End If
-            Else
-                If ButtonCtrl.Checked Then
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsCtrlAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsCtrlAltGr(temploop).Replace("&", "&&")
-                    Else
-                        KeyLabel(temploop).Text = KeyContentsCtrl(temploop).Replace("&", "&&")
-                    End If
-                Else
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsAltGr(temploop).Replace("&", "&&")
-                    Else
-                        If DeadKeys Then
-                            If KeyContentsDeadkey(temploop) <> "" Then
-                                KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&") + " (" + KeyContentsDeadkey(temploop).Replace("&", "&&") + ")"
-                            Else
-                                KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
-                            End If
-                        Else
-                            KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
-                        End If
-                    End If
-                End If
-            End If
-        Next temploop
+        RefreshLabels()
     End Sub
 
     Private Sub ButtonAlt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAlt.CheckedChanged
-        Dim temploop As Integer
-
         If ButtonAlt.Checked Then ButtonAltGr.Checked = False
-
-        For temploop = 1 To NumKeys
-            If ButtonShift.Checked Then
-                If ButtonCtrl.Checked Then
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrlAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrlAltGr(temploop).Replace("&", "&&")
-                    Else
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrl(temploop).Replace("&", "&&")
-                    End If
-                Else
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftAltGr(temploop).Replace("&", "&&")
-                    Else
-                        If DeadKeys Then
-                            If KeyContentsDeadkey(temploop) <> "" Then
-                                KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&") + " (" + KeyContentsDeadkeyShift(temploop).Replace("&", "&&") + ")"
-                            Else
-                                KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&")
-                            End If
-                        Else
-                            KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&")
-                        End If
-                    End If
-                End If
-            Else
-                If ButtonCtrl.Checked Then
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsCtrlAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsCtrlAltGr(temploop).Replace("&", "&&")
-                    Else
-                        KeyLabel(temploop).Text = KeyContentsCtrl(temploop).Replace("&", "&&")
-                    End If
-                Else
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsAltGr(temploop).Replace("&", "&&")
-                    Else
-                        If DeadKeys Then
-                            If KeyContentsDeadkey(temploop) <> "" Then
-                                KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&") + " (" + KeyContentsDeadkey(temploop).Replace("&", "&&") + ")"
-                            Else
-                                KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
-                            End If
-                        Else
-                            KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
-                        End If
-                    End If
-                End If
-            End If
-        Next temploop
+        RefreshLabels()
     End Sub
 
     Private Sub SaveProjectToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveProjectToolStripMenuItem.Click
@@ -1296,20 +1209,33 @@ Public Class Form1
         Dim temploop, rotanum, i As Integer
         Dim KeyboardFoldername, KeyboardFolderpath, KeyboardFilename, IconFileName As String
         Dim IniFilename As String
-        Dim hotkey, hotkeycontents, firstcharinhex, nextcharinhex, onloadscript, mainscript, deadkeycontents, firstcharindeadkeyhex As String
+        Dim hotkey, hotkeycontents, firstcharinhex, nextcharinhex, onloadscript, mainscript, deadkeycontents, firstcharindeadkeyhex, deadkey2contents, firstcharindeadkey2hex As String
         Dim aryTextFile() As String
+        Dim elseneeded As Boolean
 
         If DeadKeys Then
-            If DeadKey = -1 Then
+            If ((ActivateDeadkeyToolStripMenuItem.Checked) And (DeadKey < 1)) Then
                 result = MsgBox("Error: You have activated the deadkey, but" + Chr(10) + "you have not chosen your dead key yet.", MsgBoxStyle.Exclamation, "InKey Keyboard Creator")
                 Exit Sub
             End If
+            If ((DeadkeysToolStripMenuItem.Checked) And ((DeadKey2 < 1) Or (DeadKey < 1))) Then
+                If ((DeadKey < 1) And (DeadKey2 > 0)) Then
+                    result = MsgBox("Error: You have activated 2 deadkeys, but" + Chr(10) + "you have not chosen your first dead key yet.", MsgBoxStyle.Exclamation, "InKey Keyboard Creator")
+                ElseIf ((DeadKey > 0) And (DeadKey2 < 1)) Then
+                    result = MsgBox("Error: You have activated 2 deadkeys, but" + Chr(10) + "you have not chosen your second dead key yet.", MsgBoxStyle.Exclamation, "InKey Keyboard Creator")
+                Else
+                    result = MsgBox("Error: You have activated 2 deadkeys, but" + Chr(10) + "you have not chosen either dead key yet.", MsgBoxStyle.Exclamation, "InKey Keyboard Creator")
+                End If
+                Exit Sub
+            End If
+
         End If
 
         result = MsgBox("Please check to make sure that all the keyboard settings are correct," + Chr(10) + "then click the OK button to export.", MsgBoxStyle.OkOnly, "InKey Keyboard Creator")
-        Form3.Button5.Enabled = False
-        Form3.ShowDialog()
-        Form3.Button5.Enabled = True
+        result = Form3.ShowDialog()
+        If result = System.Windows.Forms.DialogResult.Cancel Then
+            Exit Sub
+        End If
 
         SaveFileDialog2.Filter = "Inkey Keyboard Files (*.inkey)|*.inkey|All files (*.*)|*.*"
         SaveFileDialog2.FilterIndex = 1
@@ -1387,8 +1313,9 @@ Public Class Form1
                 sw.WriteLine("")
                 sw.WriteLine("")
 
-                ' parse all keys generating two strings: string 1 is the rotas (if any)
-                ' string 2 is the hotkeys
+                ' parse all keys generating two strings:
+                '  onloadscript contains the rotas (if any)
+                '  mainscript contains the hotkeys
                 rotanum = 0
                 onloadscript = ""
                 mainscript = ""
@@ -1397,7 +1324,8 @@ Public Class Form1
                 For temploop = 1 To NumKeys
                     hotkeycontents = KeyContents(temploop)
                     deadkeycontents = KeyContentsDeadkey(temploop)
-                    If ((hotkeycontents <> "") Or (deadkeycontents <> "") Or (temploop = DeadKey)) Then
+                    deadkey2contents = KeyContentsDeadkey2(temploop)
+                    If ((hotkeycontents <> "") Or (deadkeycontents <> "") Or (deadkey2contents <> "") Or (temploop = DeadKey) Or (temploop = DeadKey2)) Then
                         firstcharinhex = 0
                         If hotkeycontents <> "" Then firstcharinhex = Conversion.Hex(Strings.AscW(Mid(hotkeycontents, 1, 1)))
                         hotkey = FromNumToHotkey(temploop, 0)
@@ -1407,19 +1335,51 @@ Public Class Form1
                             mainscript = mainscript + Chr(10) + hotkey + Chr(10)
                         End If
                         If DeadKeys Then
+                            firstcharindeadkeyhex = 0
+                            firstcharindeadkey2hex = 0
+                            elseneeded = False
+                            If deadkeycontents <> "" Then
+                                firstcharindeadkeyhex = Conversion.Hex(Strings.AscW(Mid(deadkeycontents, 1, 1)))
+                                mainscript = mainscript + "if (flags()=96)" + Chr(10)
+                                mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharindeadkeyhex + ")  ;| " + Mid(deadkeycontents, 1, 1) + Chr(10)
+                                elseneeded = True
+                                If (Len(deadkeycontents) > 1) Then
+                                    For i = 2 To Len(deadkeycontents)
+                                        nextcharinhex = Conversion.Hex(Strings.AscW(Mid(deadkeycontents, i, 1)))
+                                        mainscript = mainscript + Chr(9) + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(deadkeycontents, i, 1) + Chr(10)
+                                    Next
+                                End If
+                            End If
+                            If deadkey2contents <> "" Then
+                                firstcharindeadkey2hex = Conversion.Hex(Strings.AscW(Mid(deadkey2contents, 1, 1)))
+                                If elseneeded Then mainscript = mainscript + "else "
+                                mainscript = mainscript + "if (flags()=84)" + Chr(10)
+                                If (Len(deadkey2contents) > 1) Then mainscript = mainscript + "{" + Chr(10)
+                                mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharindeadkey2hex + ")  ;| " + Mid(deadkey2contents, 1, 1) + Chr(10)
+                                elseneeded = True
+                                If (Len(deadkey2contents) > 1) Then
+                                    For i = 2 To Len(deadkey2contents)
+                                        nextcharinhex = Conversion.Hex(Strings.AscW(Mid(deadkey2contents, i, 1)))
+                                        mainscript = mainscript + Chr(9) + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(deadkey2contents, i, 1) + Chr(10)
+                                    Next
+                                End If
+                                If (Len(deadkey2contents) > 1) Then mainscript = mainscript + "}" + Chr(10)
+                            End If
+
                             If temploop = DeadKey Then
-                                firstcharindeadkeyhex = 0
-                                If deadkeycontents <> "" Then firstcharindeadkeyhex = Conversion.Hex(Strings.AscW(Mid(deadkeycontents, 1, 1)))
-                                mainscript = mainscript + "if (flags()=96)" + Chr(10)
-                                If deadkeycontents <> "" Then mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharindeadkeyhex + ")  ;| " + deadkeycontents + Chr(10)
-                                mainscript = mainscript + "else" + Chr(10)
-                                mainscript = mainscript + Chr(9) + "SendChar(1,96) ;| This is the deadkey" + Chr(10)
-                            Else
-                                firstcharindeadkeyhex = ""
-                                If deadkeycontents <> "" Then firstcharindeadkeyhex = Conversion.Hex(Strings.AscW(Mid(deadkeycontents, 1, 1)))
-                                mainscript = mainscript + "if (flags()=96)" + Chr(10)
-                                If deadkeycontents <> "" Then mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharindeadkeyhex + ")  ;| " + deadkeycontents + Chr(10)
-                                mainscript = mainscript + "else" + Chr(10)
+                                If elseneeded Then
+                                    mainscript = mainscript + "else" + Chr(10)
+                                    mainscript = mainscript + Chr(9) + "SendChar(1,96) ;| This is the deadkey" + Chr(10)
+                                Else
+                                    mainscript = mainscript + "SendChar(1,96) ;| This is the deadkey" + Chr(10)
+                                End If
+                            ElseIf temploop = DeadKey2 Then
+                                If elseneeded Then
+                                    mainscript = mainscript + "else" + Chr(10)
+                                    mainscript = mainscript + Chr(9) + "SendChar(1,84) ;| This is another deadkey" + Chr(10)
+                                Else
+                                    mainscript = mainscript + "SendChar(1,84) ;| This is another deadkey" + Chr(10)
+                                End If
                             End If
                         End If
                         If ((hotkeycontents.Contains(" ")) And Not KeyRotaSuppress(temploop)) Then
@@ -1432,32 +1392,45 @@ Public Class Form1
                             Else
                                 onloadscript = onloadscript + Chr(10) + "RegisterRota(" + Trim(Str(rotanum)) + ", """ + hotkeycontents + """, 0x" + firstcharinhex + ", 0, 0, 8)  ;| " + hotkeycontents
                             End If
-                            If DeadKeys Then
+                            If DeadKeys And elseneeded Then
+                                mainscript = mainscript + "else" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "DoRota(" + Trim(Str(rotanum)) + ")" + Chr(10)
                             Else
-                                mainscript = mainscript + " DoRota(" + Trim(Str(rotanum)) + ")" + Chr(10)
+                                mainscript = mainscript + "DoRota(" + Trim(Str(rotanum)) + ")" + Chr(10)
                             End If
                         ElseIf (Len(hotkeycontents) > 1) Then
                             ' Rota not needed, but key needs to generate more than one character
-                            If DeadKeys Then
+                            If DeadKeys And elseneeded Then
+                                mainscript = mainscript + "else" + Chr(10)
+                                If (Len(hotkeycontents) > 1) Then mainscript = mainscript + "{" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharinhex + ")  ;| " + Mid(hotkeycontents, 1, 1) + Chr(10)
                             Else
-                                mainscript = mainscript + " SendChar(0x" + firstcharinhex + ")  ;| " + Mid(hotkeycontents, 1, 1) + Chr(10)
+                                mainscript = mainscript + "SendChar(0x" + firstcharinhex + ")  ;| " + Mid(hotkeycontents, 1, 1) + Chr(10)
                             End If
                             For i = 2 To Len(hotkeycontents)
                                 nextcharinhex = Conversion.Hex(Strings.AscW(Mid(hotkeycontents, i, 1)))
-                                If DeadKeys Then
+                                If DeadKeys And elseneeded Then
                                     mainscript = mainscript + Chr(9) + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(hotkeycontents, i, 1) + Chr(10)
                                 Else
-                                    mainscript = mainscript + " SendChar(0x" + nextcharinhex + ")  ;| " + Mid(hotkeycontents, i, 1) + Chr(10)
+                                    mainscript = mainscript + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(hotkeycontents, i, 1) + Chr(10)
                                 End If
                             Next
+                            If (Len(hotkeycontents) > 1) Then mainscript = mainscript + "}" + Chr(10)
                         Else
                             ' Only one character to generate
-                            If DeadKeys Then
-                                If temploop <> DeadKey Then mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
-                            Else
-                                mainscript = mainscript + " SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
+                            If (hotkeycontents <> "") Then
+                                If DeadKeys Then
+                                    If ((temploop <> DeadKey) And (temploop <> DeadKey2)) Then
+                                        If (elseneeded) Then
+                                            mainscript = mainscript + "else" + Chr(10)
+                                            mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
+                                        Else
+                                            mainscript = mainscript + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
+                                        End If
+                                    End If
+                                Else
+                                    mainscript = mainscript + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
+                                End If
                             End If
                         End If
                         mainscript = mainscript + "return"
@@ -1468,7 +1441,8 @@ Public Class Form1
                 For temploop = 1 To NumKeys
                     hotkeycontents = KeyContentsShift(temploop)
                     deadkeycontents = KeyContentsDeadkeyShift(temploop)
-                    If ((hotkeycontents <> "") Or (deadkeycontents <> "")) Then
+                    deadkey2contents = KeyContentsDeadkey2Shift(temploop)
+                    If ((hotkeycontents <> "") Or (deadkeycontents <> "") Or (deadkey2contents <> "")) Then
                         firstcharinhex = 0
                         If hotkeycontents <> "" Then firstcharinhex = Conversion.Hex(Strings.AscW(Mid(hotkeycontents, 1, 1)))
                         hotkey = FromNumToHotkey(temploop, 1)
@@ -1478,11 +1452,36 @@ Public Class Form1
                             mainscript = mainscript + Chr(10) + hotkey + Chr(10)
                         End If
                         If DeadKeys Then
-                            firstcharindeadkeyhex = ""
-                            If deadkeycontents <> "" Then firstcharindeadkeyhex = Conversion.Hex(Strings.AscW(Mid(deadkeycontents, 1, 1)))
-                            mainscript = mainscript + "if (flags()=96)" + Chr(10)
-                            If deadkeycontents <> "" Then mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharindeadkeyhex + ")  ;| " + deadkeycontents + Chr(10)
-                            mainscript = mainscript + "else" + Chr(10)
+                            firstcharindeadkeyhex = 0
+                            firstcharindeadkey2hex = 0
+                            elseneeded = False
+                            If deadkeycontents <> "" Then
+                                firstcharindeadkeyhex = Conversion.Hex(Strings.AscW(Mid(deadkeycontents, 1, 1)))
+                                mainscript = mainscript + "if (flags()=96)" + Chr(10)
+                                mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharindeadkeyhex + ")  ;| " + Mid(deadkeycontents, 1, 1) + Chr(10)
+                                elseneeded = True
+                                If (Len(deadkeycontents) > 1) Then
+                                    For i = 2 To Len(deadkeycontents)
+                                        nextcharinhex = Conversion.Hex(Strings.AscW(Mid(deadkeycontents, i, 1)))
+                                        mainscript = mainscript + Chr(9) + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(deadkeycontents, i, 1) + Chr(10)
+                                    Next
+                                End If
+                            End If
+                            If deadkey2contents <> "" Then
+                                firstcharindeadkey2hex = Conversion.Hex(Strings.AscW(Mid(deadkey2contents, 1, 1)))
+                                If elseneeded Then mainscript = mainscript + "else "
+                                mainscript = mainscript + "if (flags()=84)" + Chr(10)
+                                If (Len(deadkey2contents) > 1) Then mainscript = mainscript + "{" + Chr(10)
+                                mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharindeadkey2hex + ")  ;| " + Mid(deadkey2contents, 1, 1) + Chr(10)
+                                elseneeded = True
+                                If (Len(deadkey2contents) > 1) Then
+                                    For i = 2 To Len(deadkey2contents)
+                                        nextcharinhex = Conversion.Hex(Strings.AscW(Mid(deadkey2contents, i, 1)))
+                                        mainscript = mainscript + Chr(9) + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(deadkey2contents, i, 1) + Chr(10)
+                                    Next
+                                End If
+                                If (Len(deadkey2contents) > 1) Then mainscript = mainscript + "}" + Chr(10)
+                            End If
                         End If
                         If ((hotkeycontents.Contains(" ")) And Not KeyRotaSuppress(temploop)) Then
                             ' Rota needed
@@ -1494,32 +1493,39 @@ Public Class Form1
                             Else
                                 onloadscript = onloadscript + Chr(10) + "RegisterRota(" + Trim(Str(rotanum)) + ", """ + hotkeycontents + """, 0x" + firstcharinhex + ", 0, 0, 8)  ;| " + hotkeycontents
                             End If
-                            If DeadKeys Then
+                            If DeadKeys And elseneeded Then
+                                mainscript = mainscript + "else" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "DoRota(" + Trim(Str(rotanum)) + ")" + Chr(10)
                             Else
-                                mainscript = mainscript + " DoRota(" + Trim(Str(rotanum)) + ")" + Chr(10)
+                                mainscript = mainscript + "DoRota(" + Trim(Str(rotanum)) + ")" + Chr(10)
                             End If
                         ElseIf (Len(hotkeycontents) > 1) Then
                             ' Rota not needed, but key needs to generate more than one character
-                            If DeadKeys Then
+                            If DeadKeys And elseneeded Then
+                                mainscript = mainscript + "else" + Chr(10)
+                                If (Len(hotkeycontents) > 1) Then mainscript = mainscript + "{" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharinhex + ")  ;| " + Mid(hotkeycontents, 1, 1) + Chr(10)
                             Else
-                                mainscript = mainscript + " SendChar(0x" + firstcharinhex + ")  ;| " + Mid(hotkeycontents, 1, 1) + Chr(10)
+                                mainscript = mainscript + "SendChar(0x" + firstcharinhex + ")  ;| " + Mid(hotkeycontents, 1, 1) + Chr(10)
                             End If
                             For i = 2 To Len(hotkeycontents)
                                 nextcharinhex = Conversion.Hex(Strings.AscW(Mid(hotkeycontents, i, 1)))
-                                If DeadKeys Then
+                                If DeadKeys And elseneeded Then
                                     mainscript = mainscript + Chr(9) + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(hotkeycontents, i, 1) + Chr(10)
                                 Else
-                                    mainscript = mainscript + " SendChar(0x" + nextcharinhex + ")  ;| " + Mid(hotkeycontents, i, 1) + Chr(10)
+                                    mainscript = mainscript + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(hotkeycontents, i, 1) + Chr(10)
                                 End If
                             Next
+                            If (Len(hotkeycontents) > 1) Then mainscript = mainscript + "}" + Chr(10)
                         Else
                             ' Only one character to generate
-                            If DeadKeys Then
-                                mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
-                            Else
-                                mainscript = mainscript + " SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
+                            If (hotkeycontents <> "") Then
+                                If (DeadKeys And elseneeded) Then
+                                    mainscript = mainscript + "else" + Chr(10)
+                                    mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
+                                Else
+                                    mainscript = mainscript + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
+                                End If
                             End If
                         End If
                         mainscript = mainscript + "return"
@@ -2378,11 +2384,11 @@ Public Class Form1
         ElseIf alted Then
             Key = "!" + Key
         End If
-            If ctrled Then
-                Key = "^" + Key
-            End If
-            Key = "$" + Key + "::"
-            Return Key
+        If ctrled Then
+            Key = "^" + Key
+        End If
+        Key = "$" + Key + "::"
+        Return Key
     End Function
     Private Function AddSpaces(ByVal contents As String) As String
         Dim result As String
@@ -2930,49 +2936,8 @@ Public Class Form1
     End Sub
 
     Private Sub ButtonAltGr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonAltGr.CheckedChanged
-        Dim temploop As Integer
-
         If ButtonAltGr.Checked Then ButtonAlt.Checked = False
-
-        For temploop = 1 To NumKeys
-            If ButtonShift.Checked Then
-                If ButtonCtrl.Checked Then
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrlAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrlAltGr(temploop).Replace("&", "&&")
-                    Else
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrl(temploop).Replace("&", "&&")
-                    End If
-                Else
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftAltGr(temploop).Replace("&", "&&")
-                    Else
-                        KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&")
-                    End If
-                End If
-            Else
-                If ButtonCtrl.Checked Then
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsCtrlAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsCtrlAltGr(temploop).Replace("&", "&&")
-                    Else
-                        KeyLabel(temploop).Text = KeyContentsCtrl(temploop).Replace("&", "&&")
-                    End If
-                Else
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsAltGr(temploop).Replace("&", "&&")
-                    Else
-                        KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
-                    End If
-                End If
-            End If
-        Next temploop
+        RefreshLabels()
     End Sub
 
     Private Sub ToggleAltAltGrToLAltRAltToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToggleAltAltGrToLAltRAltToolStripMenuItem.Click
@@ -3000,13 +2965,12 @@ Public Class Form1
         If ActivateDeadkeyToolStripMenuItem.Checked = False Then
             DeadKeys = True
             ActivateDeadkeyToolStripMenuItem.Checked = True
+            DeadkeysToolStripMenuItem.Checked = False
             Dialog1.TextBox2.Enabled = True
             Dialog1.RadioButton1.Enabled = True
             Dialog1.Width = 651
+            Dialog1.GroupBox1.Width = 157
             ResetKeyBorders()
-            If DeadKey > 0 Then
-                DeadKeyBorder(DeadKey)
-            End If
             RefreshLabels()
             projectchanged = True
             If SaveFileDialog1.FileName <> "" Then SaveProjectToolStripMenuItem1.Enabled = True
@@ -3031,6 +2995,109 @@ Public Class Form1
                 Me.Text = "*Untitled - InKey Keyboard Creator"
             End If
         End If
+    End Sub
+
+    Private Sub DeadkeysToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeadkeysToolStripMenuItem.Click
+        If DeadkeysToolStripMenuItem.Checked = False Then
+            DeadKeys = True
+            DeadkeysToolStripMenuItem.Checked = True
+            ActivateDeadkeyToolStripMenuItem.Checked = False
+            Dialog1.TextBox2.Enabled = True
+            Dialog1.RadioButton1.Enabled = True
+            Dialog1.TextBox3.Enabled = True
+            Dialog1.RadioButton2.Enabled = True
+            Dialog1.Width = 807
+            Dialog1.GroupBox1.Width = 314
+            Dialog1.RadioButton1.Text = "This key is deadkey 1"
+            Dialog1.Label3.Text = "This will follow deadkey 1:"
+            ResetKeyBorders()
+            RefreshLabels()
+            projectchanged = True
+            If SaveFileDialog1.FileName <> "" Then SaveProjectToolStripMenuItem1.Enabled = True
+            If Form3.TextBox1.Text <> "" Then
+                Me.Text = "*" + Form3.TextBox1.Text + " - InKey Keyboard Creator"
+            Else
+                Me.Text = "*Untitled - InKey Keyboard Creator"
+            End If
+        Else
+            DeadKeys = False
+            DeadkeysToolStripMenuItem.Checked = False
+            Dialog1.TextBox2.Enabled = False
+            Dialog1.RadioButton1.Enabled = False
+            Dialog1.TextBox3.Enabled = False
+            Dialog1.RadioButton2.Enabled = False
+            Dialog1.RadioButton1.Text = "This key is the deadkey"
+            Dialog1.Label3.Text = "This will follow the deadkey:"
+            Dialog1.Width = 476
+            ResetKeyBorders()
+            RefreshLabels()
+            projectchanged = True
+            If SaveFileDialog1.FileName <> "" Then SaveProjectToolStripMenuItem1.Enabled = True
+            If Form3.TextBox1.Text <> "" Then
+                Me.Text = "*" + Form3.TextBox1.Text + " - InKey Keyboard Creator"
+            Else
+                Me.Text = "*Untitled - InKey Keyboard Creator"
+            End If
+        End If
+    End Sub
+
+    Private Sub RefreshLabels()
+        Dim temploop As Integer
+        For temploop = 1 To NumKeys
+            If ButtonShift.Checked Then
+                If ButtonCtrl.Checked Then
+                    If ButtonAlt.Checked Then
+                        KeyLabel(temploop).Text = KeyContentsShiftCtrlAlt(temploop).Replace("&", "&&")
+                    ElseIf ButtonAltGr.Checked Then
+                        KeyLabel(temploop).Text = KeyContentsShiftCtrlAltGr(temploop).Replace("&", "&&")
+                    Else
+                        KeyLabel(temploop).Text = KeyContentsShiftCtrl(temploop).Replace("&", "&&")
+                    End If
+                Else
+                    If ButtonAlt.Checked Then
+                        KeyLabel(temploop).Text = KeyContentsShiftAlt(temploop).Replace("&", "&&")
+                    ElseIf ButtonAltGr.Checked Then
+                        KeyLabel(temploop).Text = KeyContentsShiftAltGr(temploop).Replace("&", "&&")
+                    Else
+                        If DeadKeys Then
+                            If ((KeyContentsDeadkeyShift(temploop) <> "") Or (KeyContentsDeadkey2Shift(temploop) <> "")) Then
+                                KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&") + " (" + KeyContentsDeadkeyShift(temploop).Replace("&", "&&") + KeyContentsDeadkey2Shift(temploop).Replace("&", "&&") + ")"
+                            Else
+                                KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&")
+                            End If
+                        Else
+                            KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&")
+                        End If
+                    End If
+                End If
+            Else
+                If ButtonCtrl.Checked Then
+                    If ButtonAlt.Checked Then
+                        KeyLabel(temploop).Text = KeyContentsCtrlAlt(temploop).Replace("&", "&&")
+                    ElseIf ButtonAltGr.Checked Then
+                        KeyLabel(temploop).Text = KeyContentsCtrlAltGr(temploop).Replace("&", "&&")
+                    Else
+                        KeyLabel(temploop).Text = KeyContentsCtrl(temploop).Replace("&", "&&")
+                    End If
+                Else
+                    If ButtonAlt.Checked Then
+                        KeyLabel(temploop).Text = KeyContentsAlt(temploop).Replace("&", "&&")
+                    ElseIf ButtonAltGr.Checked Then
+                        KeyLabel(temploop).Text = KeyContentsAltGr(temploop).Replace("&", "&&")
+                    Else
+                        If DeadKeys Then
+                            If ((KeyContentsDeadkey(temploop) <> "") Or (KeyContentsDeadkey2(temploop) <> "")) Then
+                                KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&") + " (" + KeyContentsDeadkey(temploop).Replace("&", "&&") + KeyContentsDeadkey2(temploop).Replace("&", "&&") + ")"
+                            Else
+                                KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
+                            End If
+                        Else
+                            KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
+                        End If
+                    End If
+                End If
+            End If
+        Next temploop
     End Sub
 
     Private Sub ResetKeyBorders()
@@ -3175,242 +3242,252 @@ Public Class Form1
         KeyComma.FlatStyle = FlatStyle.Standard
         KeyPeriod.FlatStyle = FlatStyle.Standard
         KeySolidus.FlatStyle = FlatStyle.Standard
+
+        If (DeadKeys) Then
+            If DeadkeysToolStripMenuItem.Checked = True Then
+                DeadKeyBorder(DeadKey, Color.Red)
+                DeadKeyBorder(DeadKey2, Color.Blue)
+            Else
+                DeadKeyBorder(DeadKey, Color.Red)
+            End If
+        End If
     End Sub
 
-    Private Sub DeadKeyBorder(ByVal KeyNumber)
+    Private Sub DeadKeyBorder(ByVal KeyNumber, ByVal Color)
+        If KeyNumber < 1 Then Exit Sub
         If KeyNumber = 1 Then
             KeyGrave.FlatAppearance.BorderSize = 3
-            KeyGrave.FlatAppearance.BorderColor = Color.Red
+            KeyGrave.FlatAppearance.BorderColor = Color
             KeyGrave.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 2 Then
             KeyOne.FlatAppearance.BorderSize = 3
-            KeyOne.FlatAppearance.BorderColor = Color.Red
+            KeyOne.FlatAppearance.BorderColor = Color
             KeyOne.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 3 Then
             KeyTwo.FlatAppearance.BorderSize = 3
-            KeyTwo.FlatAppearance.BorderColor = Color.Red
+            KeyTwo.FlatAppearance.BorderColor = Color
             KeyTwo.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 4 Then
             KeyThree.FlatAppearance.BorderSize = 3
-            KeyThree.FlatAppearance.BorderColor = Color.Red
+            KeyThree.FlatAppearance.BorderColor = Color
             KeyThree.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 5 Then
             KeyFour.FlatAppearance.BorderSize = 3
-            KeyFour.FlatAppearance.BorderColor = Color.Red
+            KeyFour.FlatAppearance.BorderColor = Color
             KeyFour.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 6 Then
             KeyFive.FlatAppearance.BorderSize = 3
-            KeyFive.FlatAppearance.BorderColor = Color.Red
+            KeyFive.FlatAppearance.BorderColor = Color
             KeyFive.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 7 Then
             KeySix.FlatAppearance.BorderSize = 3
-            KeySix.FlatAppearance.BorderColor = Color.Red
+            KeySix.FlatAppearance.BorderColor = Color
             KeySix.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 8 Then
             KeySeven.FlatAppearance.BorderSize = 3
-            KeySeven.FlatAppearance.BorderColor = Color.Red
+            KeySeven.FlatAppearance.BorderColor = Color
             KeySeven.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 9 Then
             KeyEight.FlatAppearance.BorderSize = 3
-            KeyEight.FlatAppearance.BorderColor = Color.Red
+            KeyEight.FlatAppearance.BorderColor = Color
             KeyEight.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 10 Then
             KeyNine.FlatAppearance.BorderSize = 3
-            KeyNine.FlatAppearance.BorderColor = Color.Red
+            KeyNine.FlatAppearance.BorderColor = Color
             KeyNine.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 11 Then
             KeyZero.FlatAppearance.BorderSize = 3
-            KeyZero.FlatAppearance.BorderColor = Color.Red
+            KeyZero.FlatAppearance.BorderColor = Color
             KeyZero.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 12 Then
             KeyDash.FlatAppearance.BorderSize = 3
-            KeyDash.FlatAppearance.BorderColor = Color.Red
+            KeyDash.FlatAppearance.BorderColor = Color
             KeyDash.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 13 Then
             KeyEquals.FlatAppearance.BorderSize = 3
-            KeyEquals.FlatAppearance.BorderColor = Color.Red
+            KeyEquals.FlatAppearance.BorderColor = Color
             KeyEquals.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 14 Then
             KeyReverseSolidus.FlatAppearance.BorderSize = 3
-            KeyReverseSolidus.FlatAppearance.BorderColor = Color.Red
+            KeyReverseSolidus.FlatAppearance.BorderColor = Color
             KeyReverseSolidus.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 15 Then
             KeyQ.FlatAppearance.BorderSize = 3
-            KeyQ.FlatAppearance.BorderColor = Color.Red
+            KeyQ.FlatAppearance.BorderColor = Color
             KeyQ.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 16 Then
             KeyW.FlatAppearance.BorderSize = 3
-            KeyW.FlatAppearance.BorderColor = Color.Red
+            KeyW.FlatAppearance.BorderColor = Color
             KeyW.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 17 Then
             KeyE.FlatAppearance.BorderSize = 3
-            KeyE.FlatAppearance.BorderColor = Color.Red
+            KeyE.FlatAppearance.BorderColor = Color
             KeyE.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 18 Then
             KeyR.FlatAppearance.BorderSize = 3
-            KeyR.FlatAppearance.BorderColor = Color.Red
+            KeyR.FlatAppearance.BorderColor = Color
             KeyR.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 19 Then
             KeyT.FlatAppearance.BorderSize = 3
-            KeyT.FlatAppearance.BorderColor = Color.Red
+            KeyT.FlatAppearance.BorderColor = Color
             KeyT.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 20 Then
             KeyY.FlatAppearance.BorderSize = 3
-            KeyY.FlatAppearance.BorderColor = Color.Red
+            KeyY.FlatAppearance.BorderColor = Color
             KeyY.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 21 Then
             KeyU.FlatAppearance.BorderSize = 3
-            KeyU.FlatAppearance.BorderColor = Color.Red
+            KeyU.FlatAppearance.BorderColor = Color
             KeyU.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 22 Then
             KeyI.FlatAppearance.BorderSize = 3
-            KeyI.FlatAppearance.BorderColor = Color.Red
+            KeyI.FlatAppearance.BorderColor = Color
             KeyI.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 23 Then
             KeyO.FlatAppearance.BorderSize = 3
-            KeyO.FlatAppearance.BorderColor = Color.Red
+            KeyO.FlatAppearance.BorderColor = Color
             KeyO.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 24 Then
             KeyP.FlatAppearance.BorderSize = 3
-            KeyP.FlatAppearance.BorderColor = Color.Red
+            KeyP.FlatAppearance.BorderColor = Color
             KeyP.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 25 Then
             KeyOpenBracket.FlatAppearance.BorderSize = 3
-            KeyOpenBracket.FlatAppearance.BorderColor = Color.Red
+            KeyOpenBracket.FlatAppearance.BorderColor = Color
             KeyOpenBracket.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 26 Then
             KeyCloseBracket.FlatAppearance.BorderSize = 3
-            KeyCloseBracket.FlatAppearance.BorderColor = Color.Red
+            KeyCloseBracket.FlatAppearance.BorderColor = Color
             KeyCloseBracket.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 27 Then
             KeyA.FlatAppearance.BorderSize = 3
-            KeyA.FlatAppearance.BorderColor = Color.Red
+            KeyA.FlatAppearance.BorderColor = Color
             KeyA.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 28 Then
             KeyS.FlatAppearance.BorderSize = 3
-            KeyS.FlatAppearance.BorderColor = Color.Red
+            KeyS.FlatAppearance.BorderColor = Color
             KeyS.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 29 Then
             KeyD.FlatAppearance.BorderSize = 3
-            KeyD.FlatAppearance.BorderColor = Color.Red
+            KeyD.FlatAppearance.BorderColor = Color
             KeyD.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 30 Then
             KeyF.FlatAppearance.BorderSize = 3
-            KeyF.FlatAppearance.BorderColor = Color.Red
+            KeyF.FlatAppearance.BorderColor = Color
             KeyF.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 31 Then
             KeyG.FlatAppearance.BorderSize = 3
-            KeyG.FlatAppearance.BorderColor = Color.Red
+            KeyG.FlatAppearance.BorderColor = Color
             KeyG.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 32 Then
             KeyH.FlatAppearance.BorderSize = 3
-            KeyH.FlatAppearance.BorderColor = Color.Red
+            KeyH.FlatAppearance.BorderColor = Color
             KeyH.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 33 Then
             KeyJ.FlatAppearance.BorderSize = 3
-            KeyJ.FlatAppearance.BorderColor = Color.Red
+            KeyJ.FlatAppearance.BorderColor = Color
             KeyJ.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 34 Then
             KeyK.FlatAppearance.BorderSize = 3
-            KeyK.FlatAppearance.BorderColor = Color.Red
+            KeyK.FlatAppearance.BorderColor = Color
             KeyK.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 35 Then
             KeyL.FlatAppearance.BorderSize = 3
-            KeyL.FlatAppearance.BorderColor = Color.Red
+            KeyL.FlatAppearance.BorderColor = Color
             KeyL.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 36 Then
             KeySemiColon.FlatAppearance.BorderSize = 3
-            KeySemiColon.FlatAppearance.BorderColor = Color.Red
+            KeySemiColon.FlatAppearance.BorderColor = Color
             KeySemiColon.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 37 Then
             KeyApostrophe.FlatAppearance.BorderSize = 3
-            KeyApostrophe.FlatAppearance.BorderColor = Color.Red
+            KeyApostrophe.FlatAppearance.BorderColor = Color
             KeyApostrophe.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 38 Then
             KeyZ.FlatAppearance.BorderSize = 3
-            KeyZ.FlatAppearance.BorderColor = Color.Red
+            KeyZ.FlatAppearance.BorderColor = Color
             KeyZ.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 39 Then
             KeyX.FlatAppearance.BorderSize = 3
-            KeyX.FlatAppearance.BorderColor = Color.Red
+            KeyX.FlatAppearance.BorderColor = Color
             KeyX.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 40 Then
             KeyC.FlatAppearance.BorderSize = 3
-            KeyC.FlatAppearance.BorderColor = Color.Red
+            KeyC.FlatAppearance.BorderColor = Color
             KeyC.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 41 Then
             KeyV.FlatAppearance.BorderSize = 3
-            KeyV.FlatAppearance.BorderColor = Color.Red
+            KeyV.FlatAppearance.BorderColor = Color
             KeyV.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 42 Then
             KeyB.FlatAppearance.BorderSize = 3
-            KeyB.FlatAppearance.BorderColor = Color.Red
+            KeyB.FlatAppearance.BorderColor = Color
             KeyB.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 43 Then
             KeyN.FlatAppearance.BorderSize = 3
-            KeyN.FlatAppearance.BorderColor = Color.Red
+            KeyN.FlatAppearance.BorderColor = Color
             KeyN.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 44 Then
             KeyM.FlatAppearance.BorderSize = 3
-            KeyM.FlatAppearance.BorderColor = Color.Red
+            KeyM.FlatAppearance.BorderColor = Color
             KeyM.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 45 Then
             KeyComma.FlatAppearance.BorderSize = 3
-            KeyComma.FlatAppearance.BorderColor = Color.Red
+            KeyComma.FlatAppearance.BorderColor = Color
             KeyComma.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 46 Then
             KeyPeriod.FlatAppearance.BorderSize = 3
-            KeyPeriod.FlatAppearance.BorderColor = Color.Red
+            KeyPeriod.FlatAppearance.BorderColor = Color
             KeyPeriod.FlatStyle = FlatStyle.Flat
         End If
         If KeyNumber = 47 Then
             KeySolidus.FlatAppearance.BorderSize = 3
-            KeySolidus.FlatAppearance.BorderColor = Color.Red
+            KeySolidus.FlatAppearance.BorderColor = Color
             KeySolidus.FlatStyle = FlatStyle.Flat
         End If
     End Sub
@@ -3467,6 +3544,11 @@ Public Class Form1
             For temploop = 1 To NumKeys
                 sw.WriteLine(KeyContentsDeadkey(temploop))
                 sw.WriteLine(KeyContentsDeadkeyShift(temploop))
+            Next
+            sw.WriteLine(DeadKey2)
+            For temploop = 1 To NumKeys
+                sw.WriteLine(KeyContentsDeadkey2(temploop))
+                sw.WriteLine(KeyContentsDeadkey2Shift(temploop))
             Next
         End Using
         projectchanged = False
@@ -3596,37 +3678,47 @@ Public Class Form1
                     KeyContentsDeadkeyShift(temploop) = ""
                 Next
             End If
-            If DeadKeys = True Then
-                ResetKeyBorders()
-                DeadKeyBorder(DeadKey)
-                ActivateDeadkeyToolStripMenuItem.Checked = True
-                Dialog1.TextBox2.Enabled = True
-                Dialog1.RadioButton1.Enabled = True
-                Dialog1.Width = 651
+            If Not sr.EndOfStream Then
+                ' Project fileformat 1.9.2 (and later)
+                DeadKey2 = sr.ReadLine()
+                For temploop = 1 To NumKeys
+                    KeyContentsDeadkey2(temploop) = sr.ReadLine()
+                    KeyContentsDeadkey2Shift(temploop) = sr.ReadLine()
+                Next
             Else
-                ResetKeyBorders()
-                ActivateDeadkeyToolStripMenuItem.Checked = False
-                Dialog1.TextBox2.Enabled = False
-                Dialog1.RadioButton1.Enabled = False
-                Dialog1.Width = 476
+                DeadKey2 = -1
+                For temploop = 1 To NumKeys
+                    KeyContentsDeadkey2(temploop) = ""
+                    KeyContentsDeadkey2Shift(temploop) = ""
+                Next
             End If
 
+            If DeadKeys = True Then
+                If DeadKey2 < 1 Then
+                    ActivateDeadkeyToolStripMenuItem.Checked = True
+                    Dialog1.Width = 651
+                    Dialog1.GroupBox1.Width = 157
+                Else
+                    DeadkeysToolStripMenuItem.Checked = True
+                    Dialog1.Width = 807
+                    Dialog1.GroupBox1.Width = 314
+                End If
+            Else
+                ActivateDeadkeyToolStripMenuItem.Checked = False
+                DeadkeysToolStripMenuItem.Checked = False
+                Dialog1.TextBox2.Enabled = False
+                Dialog1.RadioButton1.Enabled = False
+                Dialog1.TextBox3.Enabled = False
+                Dialog1.RadioButton2.Enabled = False
+                Dialog1.Width = 476
+            End If
+            ResetKeyBorders()
             LabelFont = New Font(LabelFontName, 10, FontStyle.Regular)
             TextFont = New Font(LabelFontName, 16, FontStyle.Regular)
             For temploop = 1 To NumKeys
-                ' Load initial labels
-                ' Need to double & character to make it appear in label
-                If DeadKeys Then
-                    If KeyContentsDeadkey(temploop) <> "" Then
-                        KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&") + " (" + KeyContentsDeadkey(temploop).Replace("&", "&&") + ")"
-                    Else
-                        KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
-                    End If
-                Else
-                    KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
-                End If
                 KeyLabel(temploop).Font = LabelFont
             Next temploop
+            RefreshLabels()
             Dialog1.TextBox1.Font = TextFont
             TextBox1.Font = TextFont
             result = inthelist(Form3.TextBox4.Text)
@@ -3658,63 +3750,5 @@ Public Class Form1
                 Me.Text = "Untitled - InKey Keyboard Creator"
             End If
         End Using
-    End Sub
-    Private Sub RefreshLabels()
-        Dim temploop As Integer
-        For temploop = 1 To NumKeys
-            If ButtonShift.Checked Then
-                If ButtonCtrl.Checked Then
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrlAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrlAltGr(temploop).Replace("&", "&&")
-                    Else
-                        KeyLabel(temploop).Text = KeyContentsShiftCtrl(temploop).Replace("&", "&&")
-                    End If
-                Else
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsShiftAltGr(temploop).Replace("&", "&&")
-                    Else
-                        If DeadKeys Then
-                            If KeyContentsDeadkeyShift(temploop) <> "" Then
-                                KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&") + " (" + KeyContentsDeadkeyShift(temploop).Replace("&", "&&") + ")"
-                            Else
-                                KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&")
-                            End If
-                        Else
-                            KeyLabel(temploop).Text = KeyContentsShift(temploop).Replace("&", "&&")
-                        End If
-                    End If
-                End If
-            Else
-                If ButtonCtrl.Checked Then
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsCtrlAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsCtrlAltGr(temploop).Replace("&", "&&")
-                    Else
-                        KeyLabel(temploop).Text = KeyContentsCtrl(temploop).Replace("&", "&&")
-                    End If
-                Else
-                    If ButtonAlt.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsAlt(temploop).Replace("&", "&&")
-                    ElseIf ButtonAltGr.Checked Then
-                        KeyLabel(temploop).Text = KeyContentsAltGr(temploop).Replace("&", "&&")
-                    Else
-                        If DeadKeys Then
-                            If KeyContentsDeadkey(temploop) <> "" Then
-                                KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&") + " (" + KeyContentsDeadkey(temploop).Replace("&", "&&") + ")"
-                            Else
-                                KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
-                            End If
-                        Else
-                            KeyLabel(temploop).Text = KeyContents(temploop).Replace("&", "&&")
-                        End If
-                    End If
-                End If
-            End If
-        Next temploop
     End Sub
 End Class
