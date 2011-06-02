@@ -48,7 +48,7 @@ Root: HKCU; Subkey: Software\InKeyKeyboardCreator; ValueType: string; ValueName:
 Root: HKCR; SubKey: .ikp; ValueType: string; ValueData: IKP File; Flags: uninsdeletekey; Tasks: associate
 Root: HKCR; SubKey: IKP File; ValueType: string; ValueData: IKP File; Flags: uninsdeletekey; Tasks: associate
 Root: HKCR; SubKey: IKP File\Shell\Open\Command; ValueType: string; ValueData: """{app}\InKeyKeyboardCreator.exe"" ""%1"""; Flags: uninsdeletevalue; Tasks: associate
-Root: HKCR; Subkey: IKP File\DefaultIcon; ValueType: string; ValueData: {app}\InKeyKeyboardCreator.exe,0; Flags: uninsdeletevalue; Tasks: associate
+Root: HKCR; Subkey: IKP File\DefaultIcon; ValueType: string; ValueData: {app}\InKeyKeyboardCreator.exe,1; Flags: uninsdeletevalue; Tasks: associate
 
 [Run]
 Filename: {app}\InKeyKeyboardCreator.exe; Description: {cm:LaunchProgram,InKeyKeyboardCreator}; Flags: nowait postinstall skipifsilent
