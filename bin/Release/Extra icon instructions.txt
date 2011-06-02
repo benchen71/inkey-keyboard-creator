@@ -1,0 +1,11 @@
+Using ResHacker:
+
+1. File->Open...->"InKeyKeyboardCreator.exe"
+2. Open "Icon Group"
+3. Click + and right-click on item.  Choose "Rename Resource"
+4. Enter new resource name: 100
+5. Action->"Add a new resource..."
+6. Click "Open file with new resource..."
+7. Find "inkeykeyboardcreatorblank.ico"
+8. Give it the resource name: 101
+9. File->Save
