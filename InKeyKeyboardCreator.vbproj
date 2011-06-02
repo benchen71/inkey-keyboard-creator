@@ -11,7 +11,7 @@
     <RootNamespace>InKeyKeyboardCreator</RootNamespace>
     <AssemblyName>InKeyKeyboardCreator</AssemblyName>
     <MyType>WindowsForms</MyType>
-    <ApplicationIcon>inkey.ico</ApplicationIcon>
+    <ApplicationIcon>inkeykeyboardcreator.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -167,7 +167,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="inkey.ico" />
+    <EmbeddedResource Include="inkeykeyboardcreator.ico" />
     <None Include="Resources\warning1.png" />
     <EmbeddedResource Include="AboutBox1.resx">
       <SubType>Designer</SubType>
@@ -181,6 +181,9 @@
       <ProductName>.NET Framework 2.0</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="inkeykeyboardcreatorblank.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

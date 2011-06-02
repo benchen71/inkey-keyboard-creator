@@ -164,3 +164,6 @@ E:\Source Code\VB2005\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.Form
 E:\Source Code\VB2005\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.Resources.resources
 E:\Source Code\VB2005\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.AboutBox1.resources
 E:\Source Code\VB2005\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.vbproj.GenerateResource.Cache
+C:\Documents and Settings\benc\My Documents\Visual Studio 2005\Projects\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.inkeykeyboardcreator.ico
+C:\Documents and Settings\benc\My Documents\Visual Studio 2005\Projects\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.inkeykeyboardcreator.ico
+C:\Documents and Settings\benc\My Documents\Visual Studio 2005\Projects\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.inkeykeyboardcreatorblank.ico
