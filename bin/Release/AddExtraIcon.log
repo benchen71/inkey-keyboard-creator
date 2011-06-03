@@ -1,0 +1,16 @@
+[03 Jun 2011, 14:10:23]
+
+[FileNames]
+Exe=InKeyKeyboardCreator.exe
+SaveAs=InKeyKeyboardCreator.exe
+Log=AddExtraIcon.log
+
+[Commands]
+-delete ICONGROUP, 32512, 0
+  Deleted: ICONGROUP,32512,0
+-add "inkeykeyboardcreator.ico", ICONGROUP, 100, 1033
+  Added: ICONGROUP,100,0
+-add "inkeykeyboardcreatorblank.ico", ICONGROUP, 101, 1033
+  Added: ICONGROUP,101,0
+
+Commands completed

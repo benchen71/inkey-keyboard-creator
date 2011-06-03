@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("InKeyKeyboardCreator")> 
-<Assembly: AssemblyDescription("GUI for creating keyboards for InKey")> 
+<Assembly: AssemblyDescription("A GUI for creating keyboards for InKey")> 
 <Assembly: AssemblyCompany("SIL")> 
 <Assembly: AssemblyProduct("InKeyKeyboardCreator")> 
 <Assembly: AssemblyCopyright("Copyright © SIL 2008-2011")> 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.9.3")> 
-<Assembly: AssemblyFileVersion("1.9.3")> 
+<Assembly: AssemblyVersion("1.9.4")> 
+<Assembly: AssemblyFileVersion("1.9.4")> 

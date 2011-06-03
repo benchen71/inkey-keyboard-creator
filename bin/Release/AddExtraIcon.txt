@@ -1,0 +1,8 @@
+[FILENAMES]
+Exe=InKeyKeyboardCreator.exe
+SaveAs=InKeyKeyboardCreator.exe
+Log=AddExtraIcon.log
+[COMMANDS]
+-delete ICONGROUP, 32512, 0
+-add "inkeykeyboardcreator.ico", ICONGROUP, 100, 1033
+-add "inkeykeyboardcreatorblank.ico", ICONGROUP, 101, 1033
