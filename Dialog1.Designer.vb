@@ -26,12 +26,12 @@ Partial Class Dialog1
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.TextBox2 = New System.Windows.Forms.TextBox
-        Me.RadioButton1 = New System.Windows.Forms.RadioButton
         Me.Label4 = New System.Windows.Forms.Label
         Me.TextBox3 = New System.Windows.Forms.TextBox
         Me.RadioButton2 = New System.Windows.Forms.RadioButton
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.TextBox2 = New System.Windows.Forms.TextBox
+        Me.RadioButton1 = New System.Windows.Forms.RadioButton
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -54,9 +54,9 @@ Partial Class Dialog1
         '
         'CheckBox1
         '
-        Me.CheckBox1.Location = New System.Drawing.Point(18, 92)
+        Me.CheckBox1.Location = New System.Drawing.Point(18, 98)
         Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(265, 37)
+        Me.CheckBox1.Size = New System.Drawing.Size(265, 31)
         Me.CheckBox1.TabIndex = 3
         Me.CheckBox1.Text = "Suppress rota creation for this key (only necessary if the set of characters incl" & _
             "udes a space)"
@@ -105,37 +105,6 @@ Partial Class Dialog1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Deadkey Zone:"
         '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(12, 31)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(139, 13)
-        Me.Label3.TabIndex = 9
-        Me.Label3.Text = "This will follow the deadkey:"
-        '
-        'TextBox2
-        '
-        Me.TextBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.TextBox2.Enabled = False
-        Me.TextBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 16.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox2.Location = New System.Drawing.Point(15, 47)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(128, 32)
-        Me.TextBox2.TabIndex = 8
-        '
-        'RadioButton1
-        '
-        Me.RadioButton1.AutoSize = True
-        Me.RadioButton1.Enabled = False
-        Me.RadioButton1.Location = New System.Drawing.Point(15, 90)
-        Me.RadioButton1.Name = "RadioButton1"
-        Me.RadioButton1.Size = New System.Drawing.Size(137, 17)
-        Me.RadioButton1.TabIndex = 0
-        Me.RadioButton1.TabStop = True
-        Me.RadioButton1.Text = "This key is the deadkey"
-        Me.RadioButton1.UseVisualStyleBackColor = True
-        '
         'Label4
         '
         Me.Label4.AutoSize = True
@@ -166,6 +135,37 @@ Partial Class Dialog1
         Me.RadioButton2.TabStop = True
         Me.RadioButton2.Text = "This key is deadkey 2"
         Me.RadioButton2.UseVisualStyleBackColor = True
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(12, 31)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(139, 13)
+        Me.Label3.TabIndex = 9
+        Me.Label3.Text = "This will follow the deadkey:"
+        '
+        'TextBox2
+        '
+        Me.TextBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.TextBox2.Enabled = False
+        Me.TextBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 16.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox2.Location = New System.Drawing.Point(15, 47)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(128, 32)
+        Me.TextBox2.TabIndex = 8
+        '
+        'RadioButton1
+        '
+        Me.RadioButton1.AutoSize = True
+        Me.RadioButton1.Enabled = False
+        Me.RadioButton1.Location = New System.Drawing.Point(15, 90)
+        Me.RadioButton1.Name = "RadioButton1"
+        Me.RadioButton1.Size = New System.Drawing.Size(137, 17)
+        Me.RadioButton1.TabIndex = 0
+        Me.RadioButton1.TabStop = True
+        Me.RadioButton1.Text = "This key is the deadkey"
+        Me.RadioButton1.UseVisualStyleBackColor = True
         '
         'Dialog1
         '

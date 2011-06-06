@@ -48,15 +48,18 @@ Public Class Form1
         Dim beforefont
 
         beforefont = KeyLabel(1).Font.Name
+        FontDialog1.Font = KeyLabel(1).Font
 
         FontError = FontDialog1.ShowDialog()
-        LabelFont = New Font(FontDialog1.Font.Name, 10, FontStyle.Regular)
-        TextFont = New Font(FontDialog1.Font.Name, 16, FontStyle.Regular)
-        For temploop = 1 To NumKeys
-            KeyLabel(temploop).Font = LabelFont
-        Next temploop
-        Dialog1.TextBox1.Font = TextFont
-        TextBox1.Font = TextFont
+        If FontError <> DialogResult.Cancel Then
+            LabelFont = New Font(FontDialog1.Font.Name, 10, FontStyle.Regular)
+            TextFont = New Font(FontDialog1.Font.Name, 16, FontStyle.Regular)
+            For temploop = 1 To NumKeys
+                KeyLabel(temploop).Font = LabelFont
+            Next temploop
+            Dialog1.TextBox1.Font = TextFont
+            TextBox1.Font = TextFont
+        End If
 
         If (beforefont <> KeyLabel(1).Font.Name) Then
             projectchanged = True
@@ -1415,7 +1418,7 @@ Public Class Form1
                                     mainscript = mainscript + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(hotkeycontents, i, 1) + Chr(10)
                                 End If
                             Next
-                            If (Len(hotkeycontents) > 1) Then mainscript = mainscript + "}" + Chr(10)
+                            If ((Len(hotkeycontents) > 1) And (elseneeded)) Then mainscript = mainscript + "}" + Chr(10)
                         Else
                             ' Only one character to generate
                             If (hotkeycontents <> "") Then
@@ -1516,7 +1519,7 @@ Public Class Form1
                                     mainscript = mainscript + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(hotkeycontents, i, 1) + Chr(10)
                                 End If
                             Next
-                            If (Len(hotkeycontents) > 1) Then mainscript = mainscript + "}" + Chr(10)
+                            If ((Len(hotkeycontents) > 1) And (elseneeded)) Then mainscript = mainscript + "}" + Chr(10)
                         Else
                             ' Only one character to generate
                             If (hotkeycontents <> "") Then

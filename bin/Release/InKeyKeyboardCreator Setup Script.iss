@@ -4,8 +4,8 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{092C5E1D-BB21-47FA-B230-50CB72DB8A1E}
 AppName=InKeyKeyboardCreator
-AppVerName=InKeyKeyboardCreator 1.9.4
-VersionInfoVersion=1.9.4
+AppVerName=InKeyKeyboardCreator 1.9.5
+VersionInfoVersion=1.9.5
 AppPublisher=Ben Chenoweth
 AppPublisherURL=http://code.google.com/p/inkey-keyboard-creator/
 AppSupportURL=http://wiki.inkeysoftware.com/doku.php?id=inkeykeyboardcreator
@@ -18,7 +18,7 @@ DefaultGroupName=InKeyKeyboardCreator
 UninstallDisplayIcon={app}\InKeyKeyboardCreator.exe
 AllowNoIcons=yes
 LicenseFile=InKeyKeyboardCreator License.txt
-OutputBaseFilename=InKeyKeyboardCreator Setup 1.9.4
+OutputBaseFilename=InKeyKeyboardCreator Setup 1.9.5
 Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes
