@@ -167,3 +167,39 @@ E:\Source Code\VB2005\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.vbpr
 C:\Documents and Settings\benc\My Documents\Visual Studio 2005\Projects\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.inkeykeyboardcreator.ico
 C:\Documents and Settings\benc\My Documents\Visual Studio 2005\Projects\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.inkeykeyboardcreator.ico
 E:\Source Code\VB2005\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.inkeykeyboardcreator.ico
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.exe
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.xml
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.pdb
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\bin\Debug\InKeyKeyboardCreator.exe
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\bin\Debug\InKeyKeyboardCreator.pdb
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\bin\Debug\InKeyKeyboardCreator.xml
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\bin\Debug\Ionic.Zip.dll
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\ResolveAssemblyReference.cache
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.inkeykeyboardcreator.ico
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.Ionic.Zip.dll
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.Dialog2.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.Dialog1.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.Dialog3.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.Form1.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.Form3.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.Resources.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.AboutBox1.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.vbproj.GenerateResource.Cache
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.exe
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.xml
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Debug\InKeyKeyboardCreator.pdb
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\bin\Release\InKeyKeyboardCreator.exe
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\bin\Release\InKeyKeyboardCreator.pdb
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\bin\Release\InKeyKeyboardCreator.xml
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\bin\Release\Ionic.Zip.dll
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\ResolveAssemblyReference.cache
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.inkeykeyboardcreator.ico
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.Ionic.Zip.dll
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.Dialog2.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.Dialog1.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.Dialog3.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.Form1.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.Form3.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.Resources.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.AboutBox1.resources
+B:\Source Code\Visual Basic 2005 Express\InKeyKeyboardCreator\obj\Release\InKeyKeyboardCreator.vbproj.GenerateResource.Cache

@@ -1343,7 +1343,7 @@ Public Class Form1
                             elseneeded = False
                             If deadkeycontents <> "" Then
                                 firstcharindeadkeyhex = Conversion.Hex(Strings.AscW(Mid(deadkeycontents, 1, 1)))
-                                mainscript = mainscript + "if (flags()=96)" + Chr(10)
+                                mainscript = mainscript + "if (flags()=96) {" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharindeadkeyhex + ")  ;| " + Mid(deadkeycontents, 1, 1) + Chr(10)
                                 elseneeded = True
                                 If (Len(deadkeycontents) > 1) Then
@@ -1355,9 +1355,8 @@ Public Class Form1
                             End If
                             If deadkey2contents <> "" Then
                                 firstcharindeadkey2hex = Conversion.Hex(Strings.AscW(Mid(deadkey2contents, 1, 1)))
-                                If elseneeded Then mainscript = mainscript + "else "
-                                mainscript = mainscript + "if (flags()=84)" + Chr(10)
-                                If (Len(deadkey2contents) > 1) Then mainscript = mainscript + "{" + Chr(10)
+                                If elseneeded Then mainscript = mainscript + "} else "
+                                mainscript = mainscript + "if (flags()=84) {" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharindeadkey2hex + ")  ;| " + Mid(deadkey2contents, 1, 1) + Chr(10)
                                 elseneeded = True
                                 If (Len(deadkey2contents) > 1) Then
@@ -1366,19 +1365,18 @@ Public Class Form1
                                         mainscript = mainscript + Chr(9) + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(deadkey2contents, i, 1) + Chr(10)
                                     Next
                                 End If
-                                If (Len(deadkey2contents) > 1) Then mainscript = mainscript + "}" + Chr(10)
                             End If
 
                             If temploop = DeadKey Then
                                 If elseneeded Then
-                                    mainscript = mainscript + "else" + Chr(10)
+                                    mainscript = mainscript + "} else {" + Chr(10)
                                     mainscript = mainscript + Chr(9) + "SendChar(1,96) ;| This is the deadkey" + Chr(10)
                                 Else
                                     mainscript = mainscript + "SendChar(1,96) ;| This is the deadkey" + Chr(10)
                                 End If
                             ElseIf temploop = DeadKey2 Then
                                 If elseneeded Then
-                                    mainscript = mainscript + "else" + Chr(10)
+                                    mainscript = mainscript + "} else {" + Chr(10)
                                     mainscript = mainscript + Chr(9) + "SendChar(1,84) ;| This is another deadkey" + Chr(10)
                                 Else
                                     mainscript = mainscript + "SendChar(1,84) ;| This is another deadkey" + Chr(10)
@@ -1396,7 +1394,7 @@ Public Class Form1
                                 onloadscript = onloadscript + Chr(10) + "RegisterRota(" + Trim(Str(rotanum)) + ", """ + hotkeycontents + """, 0x" + firstcharinhex + ", 0, 0, 8)  ;| " + hotkeycontents
                             End If
                             If DeadKeys And elseneeded Then
-                                mainscript = mainscript + "else" + Chr(10)
+                                mainscript = mainscript + "} else {" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "DoRota(" + Trim(Str(rotanum)) + ")" + Chr(10)
                             Else
                                 mainscript = mainscript + "DoRota(" + Trim(Str(rotanum)) + ")" + Chr(10)
@@ -1404,8 +1402,7 @@ Public Class Form1
                         ElseIf (Len(hotkeycontents) > 1) Then
                             ' Rota not needed, but key needs to generate more than one character
                             If DeadKeys And elseneeded Then
-                                mainscript = mainscript + "else" + Chr(10)
-                                If (Len(hotkeycontents) > 1) Then mainscript = mainscript + "{" + Chr(10)
+                                mainscript = mainscript + "} else {" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharinhex + ")  ;| " + Mid(hotkeycontents, 1, 1) + Chr(10)
                             Else
                                 mainscript = mainscript + "SendChar(0x" + firstcharinhex + ")  ;| " + Mid(hotkeycontents, 1, 1) + Chr(10)
@@ -1418,14 +1415,13 @@ Public Class Form1
                                     mainscript = mainscript + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(hotkeycontents, i, 1) + Chr(10)
                                 End If
                             Next
-                            If ((Len(hotkeycontents) > 1) And (elseneeded)) Then mainscript = mainscript + "}" + Chr(10)
                         Else
                             ' Only one character to generate
                             If (hotkeycontents <> "") Then
                                 If DeadKeys Then
                                     If ((temploop <> DeadKey) And (temploop <> DeadKey2)) Then
                                         If (elseneeded) Then
-                                            mainscript = mainscript + "else" + Chr(10)
+                                            mainscript = mainscript + "} else {" + Chr(10)
                                             mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
                                         Else
                                             mainscript = mainscript + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
@@ -1435,6 +1431,9 @@ Public Class Form1
                                     mainscript = mainscript + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
                                 End If
                             End If
+                        End If
+                        If elseneeded Then
+                            mainscript = mainscript + "}" + Chr(10)
                         End If
                         mainscript = mainscript + "return"
                     End If
@@ -1460,7 +1459,7 @@ Public Class Form1
                             elseneeded = False
                             If deadkeycontents <> "" Then
                                 firstcharindeadkeyhex = Conversion.Hex(Strings.AscW(Mid(deadkeycontents, 1, 1)))
-                                mainscript = mainscript + "if (flags()=96)" + Chr(10)
+                                mainscript = mainscript + "if (flags()=96) {" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharindeadkeyhex + ")  ;| " + Mid(deadkeycontents, 1, 1) + Chr(10)
                                 elseneeded = True
                                 If (Len(deadkeycontents) > 1) Then
@@ -1472,9 +1471,8 @@ Public Class Form1
                             End If
                             If deadkey2contents <> "" Then
                                 firstcharindeadkey2hex = Conversion.Hex(Strings.AscW(Mid(deadkey2contents, 1, 1)))
-                                If elseneeded Then mainscript = mainscript + "else "
-                                mainscript = mainscript + "if (flags()=84)" + Chr(10)
-                                If (Len(deadkey2contents) > 1) Then mainscript = mainscript + "{" + Chr(10)
+                                If elseneeded Then mainscript = mainscript + "} else "
+                                mainscript = mainscript + "if (flags()=84) {" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharindeadkey2hex + ")  ;| " + Mid(deadkey2contents, 1, 1) + Chr(10)
                                 elseneeded = True
                                 If (Len(deadkey2contents) > 1) Then
@@ -1483,7 +1481,6 @@ Public Class Form1
                                         mainscript = mainscript + Chr(9) + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(deadkey2contents, i, 1) + Chr(10)
                                     Next
                                 End If
-                                If (Len(deadkey2contents) > 1) Then mainscript = mainscript + "}" + Chr(10)
                             End If
                         End If
                         If ((hotkeycontents.Contains(" ")) And Not KeyRotaSuppress(temploop)) Then
@@ -1497,7 +1494,7 @@ Public Class Form1
                                 onloadscript = onloadscript + Chr(10) + "RegisterRota(" + Trim(Str(rotanum)) + ", """ + hotkeycontents + """, 0x" + firstcharinhex + ", 0, 0, 8)  ;| " + hotkeycontents
                             End If
                             If DeadKeys And elseneeded Then
-                                mainscript = mainscript + "else" + Chr(10)
+                                mainscript = mainscript + "} else {" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "DoRota(" + Trim(Str(rotanum)) + ")" + Chr(10)
                             Else
                                 mainscript = mainscript + "DoRota(" + Trim(Str(rotanum)) + ")" + Chr(10)
@@ -1505,8 +1502,7 @@ Public Class Form1
                         ElseIf (Len(hotkeycontents) > 1) Then
                             ' Rota not needed, but key needs to generate more than one character
                             If DeadKeys And elseneeded Then
-                                mainscript = mainscript + "else" + Chr(10)
-                                If (Len(hotkeycontents) > 1) Then mainscript = mainscript + "{" + Chr(10)
+                                mainscript = mainscript + "} else {" + Chr(10)
                                 mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharinhex + ")  ;| " + Mid(hotkeycontents, 1, 1) + Chr(10)
                             Else
                                 mainscript = mainscript + "SendChar(0x" + firstcharinhex + ")  ;| " + Mid(hotkeycontents, 1, 1) + Chr(10)
@@ -1519,17 +1515,19 @@ Public Class Form1
                                     mainscript = mainscript + "SendChar(0x" + nextcharinhex + ")  ;| " + Mid(hotkeycontents, i, 1) + Chr(10)
                                 End If
                             Next
-                            If ((Len(hotkeycontents) > 1) And (elseneeded)) Then mainscript = mainscript + "}" + Chr(10)
                         Else
                             ' Only one character to generate
                             If (hotkeycontents <> "") Then
                                 If (DeadKeys And elseneeded) Then
-                                    mainscript = mainscript + "else" + Chr(10)
+                                    mainscript = mainscript + "} else {" + Chr(10)
                                     mainscript = mainscript + Chr(9) + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
                                 Else
                                     mainscript = mainscript + "SendChar(0x" + firstcharinhex + ")  ;| " + hotkeycontents + Chr(10)
                                 End If
                             End If
+                        End If
+                        If elseneeded Then
+                            mainscript = mainscript + "}" + Chr(10)
                         End If
                         mainscript = mainscript + "return"
                     End If

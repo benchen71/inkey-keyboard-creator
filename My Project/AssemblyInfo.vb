@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("A GUI for creating keyboards for InKey")> 
 <Assembly: AssemblyCompany("SIL")> 
 <Assembly: AssemblyProduct("InKeyKeyboardCreator")> 
-<Assembly: AssemblyCopyright("Copyright © SIL 2008-2011")> 
+<Assembly: AssemblyCopyright("Copyright © SIL 2008-2012")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.9.5")> 
-<Assembly: AssemblyFileVersion("1.9.5")> 
+<Assembly: AssemblyVersion("1.9.6")> 
+<Assembly: AssemblyFileVersion("1.9.6")> 
