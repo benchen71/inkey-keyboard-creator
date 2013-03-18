@@ -32,6 +32,8 @@ Partial Class Dialog1
         Me.Label3 = New System.Windows.Forms.Label
         Me.TextBox2 = New System.Windows.Forms.TextBox
         Me.RadioButton1 = New System.Windows.Forms.RadioButton
+        Me.RadioButton3 = New System.Windows.Forms.RadioButton
+        Me.RadioButton4 = New System.Windows.Forms.RadioButton
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -54,7 +56,7 @@ Partial Class Dialog1
         '
         'CheckBox1
         '
-        Me.CheckBox1.Location = New System.Drawing.Point(18, 98)
+        Me.CheckBox1.Location = New System.Drawing.Point(18, 114)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(265, 31)
         Me.CheckBox1.TabIndex = 3
@@ -74,7 +76,7 @@ Partial Class Dialog1
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.OK_Button.Location = New System.Drawing.Point(318, 99)
+        Me.OK_Button.Location = New System.Drawing.Point(319, 120)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 5
@@ -84,7 +86,7 @@ Partial Class Dialog1
         '
         Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(390, 99)
+        Me.Cancel_Button.Location = New System.Drawing.Point(391, 120)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 6
@@ -167,11 +169,35 @@ Partial Class Dialog1
         Me.RadioButton1.Text = "This key is the deadkey"
         Me.RadioButton1.UseVisualStyleBackColor = True
         '
+        'RadioButton3
+        '
+        Me.RadioButton3.AutoSize = True
+        Me.RadioButton3.Location = New System.Drawing.Point(19, 93)
+        Me.RadioButton3.Name = "RadioButton3"
+        Me.RadioButton3.Size = New System.Drawing.Size(92, 17)
+        Me.RadioButton3.TabIndex = 8
+        Me.RadioButton3.TabStop = True
+        Me.RadioButton3.Text = "MultiTap Rota"
+        Me.RadioButton3.UseVisualStyleBackColor = True
+        '
+        'RadioButton4
+        '
+        Me.RadioButton4.AutoSize = True
+        Me.RadioButton4.Location = New System.Drawing.Point(117, 93)
+        Me.RadioButton4.Name = "RadioButton4"
+        Me.RadioButton4.Size = New System.Drawing.Size(89, 17)
+        Me.RadioButton4.TabIndex = 9
+        Me.RadioButton4.TabStop = True
+        Me.RadioButton4.Text = "Looping Rota"
+        Me.RadioButton4.UseVisualStyleBackColor = True
+        '
         'Dialog1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(801, 134)
+        Me.ClientSize = New System.Drawing.Size(801, 149)
+        Me.Controls.Add(Me.RadioButton4)
+        Me.Controls.Add(Me.RadioButton3)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
@@ -204,5 +230,7 @@ Partial Class Dialog1
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
     Friend WithEvents RadioButton2 As System.Windows.Forms.RadioButton
+    Friend WithEvents RadioButton3 As System.Windows.Forms.RadioButton
+    Friend WithEvents RadioButton4 As System.Windows.Forms.RadioButton
 
 End Class
