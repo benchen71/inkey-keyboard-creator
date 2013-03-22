@@ -109,5 +109,6 @@ Public Class Form3
         Else
             PictureBox1.Image = Nothing
         End If
+        Button4.Focus()
     End Sub
 End Class

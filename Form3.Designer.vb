@@ -162,6 +162,7 @@ Partial Class Form3
         '
         'Button5
         '
+        Me.Button5.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Button5.Location = New System.Drawing.Point(236, 186)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(83, 26)
@@ -237,8 +238,10 @@ Partial Class Form3
         '
         'Form3
         '
+        Me.AcceptButton = Me.Button4
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.Button5
         Me.ClientSize = New System.Drawing.Size(427, 226)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label9)
