@@ -4,12 +4,12 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{092C5E1D-BB21-47FA-B230-50CB72DB8A1E}
 AppName=InKeyKeyboardCreator
-AppVerName=InKeyKeyboardCreator 2.1.0
-VersionInfoVersion=2.1.0
+AppVerName=InKeyKeyboardCreator 3.0.0
+VersionInfoVersion=3.0.0
 AppPublisher=Ben Chenoweth
-AppPublisherURL=http://code.google.com/p/inkey-keyboard-creator/
-AppSupportURL=http://wiki.inkeysoftware.com/doku.php?id=inkeykeyboardcreator
-AppUpdatesURL=http://code.google.com/p/inkey-keyboard-creator/downloads/list
+AppPublisherURL=https://github.com/benchen71/inkey-keyboard-creator/
+AppSupportURL=http://inkeysoftware.com/ikc.html
+AppUpdatesURL=https://github.com/benchen71/inkey-keyboard-creator/releases
 
 ; Select destination directory depending on Windows version
 DefaultDirName={reg:HKCU\Software\InKeyKeyboardCreator,Path|{pf}\InKeyKeyboardCreator}
@@ -18,7 +18,7 @@ DefaultGroupName=InKeyKeyboardCreator
 UninstallDisplayIcon={app}\InKeyKeyboardCreator.exe
 AllowNoIcons=yes
 LicenseFile=InKeyKeyboardCreator License.txt
-OutputBaseFilename=InKeyKeyboardCreator Setup 2.1.0
+OutputBaseFilename=InKeyKeyboardCreator Setup 3.0.0
 Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes
@@ -34,6 +34,8 @@ Name: associate; Description: &Associate IKP files; GroupDescription: Other task
 [Files]
 Source: InKeyKeyboardCreator.exe; DestDir: {app}; Flags: ignoreversion
 Source: generic.ico; DestDir: {app}; Flags: ignoreversion
+Source: Russian.ico; DestDir: {app}; Flags: ignoreversion
+Source: Russian.ikp; DestDir: {app}; Flags: ignoreversion
 Source: InKeyKeyboardCreator License.txt; DestDir: {app}; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

@@ -45,6 +45,8 @@ Partial Class Form3
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.Label9 = New System.Windows.Forms.Label
+        Me.Label10 = New System.Windows.Forms.Label
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -153,7 +155,7 @@ Partial Class Form3
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(128, 186)
+        Me.Button4.Location = New System.Drawing.Point(128, 206)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(83, 26)
         Me.Button4.TabIndex = 17
@@ -163,7 +165,7 @@ Partial Class Form3
         'Button5
         '
         Me.Button5.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Button5.Location = New System.Drawing.Point(236, 186)
+        Me.Button5.Location = New System.Drawing.Point(236, 206)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(83, 26)
         Me.Button5.TabIndex = 18
@@ -236,13 +238,33 @@ Partial Class Form3
         Me.Label9.TabIndex = 20
         Me.Label9.Text = "!=ALT"
         '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(9, 182)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(84, 13)
+        Me.Label10.TabIndex = 21
+        Me.Label10.Text = "CAPS Sensitive:"
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(101, 182)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(15, 14)
+        Me.CheckBox1.TabIndex = 22
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
         'Form3
         '
         Me.AcceptButton = Me.Button4
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Button5
-        Me.ClientSize = New System.Drawing.Size(427, 226)
+        Me.ClientSize = New System.Drawing.Size(427, 242)
+        Me.Controls.Add(Me.CheckBox1)
+        Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.PictureBox1)
@@ -296,4 +318,6 @@ Partial Class Form3
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
 End Class

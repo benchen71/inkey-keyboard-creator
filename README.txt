@@ -1,5 +1,5 @@
 InKey Keyboard Creator - A GUI for creating a keyboards for InKey
-Version: 2.1.0
+Version: 3.0.0
 Copyright (C) 2008-2015 Ben Chenoweth
 
 This program is free software: you can redistribute it and/or modify

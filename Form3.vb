@@ -74,6 +74,7 @@ Public Class Form3
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         Dim tempicon
+
         OpenFileDialog1.Filter = "Icon Files (*.ico)|*.ico|All files (*.*)|*.*"
         OpenFileDialog1.FilterIndex = 1
         If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -95,6 +96,7 @@ Public Class Form3
     End Sub
 
     Private Sub Form3_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Dim tempiconfile As String
         Dim tempicon
         LayoutName = TextBox1.Text
         MenuText = TextBox2.Text
@@ -103,12 +105,17 @@ Public Class Form3
         AltLocale = TextBox5.Text
         IconInfo = TextBox6.Text
         If TextBox6.Text <> "" Then
-            tempicon = New System.Drawing.Icon(TextBox6.Text)
+            If (Mid(TextBox6.Text, 1, 3) = "..\") Then
+                tempiconfile = Path.GetDirectoryName(Form1.OpenFileDialog1.FileName) + Mid(TextBox6.Text, 3)
+            Else
+                tempiconfile = TextBox6.Text
+            End If
+            tempicon = New System.Drawing.Icon(tempiconfile)
             Dim bmp As Bitmap = tempicon.ToBitmap()
             PictureBox1.Image = bmp
         Else
             PictureBox1.Image = Nothing
         End If
-        Button4.Focus()
+            Button4.Focus()
     End Sub
 End Class

@@ -32,13 +32,12 @@ Partial Class Dialog1
         Me.TextBox2 = New System.Windows.Forms.TextBox
         Me.RadioButton1 = New System.Windows.Forms.RadioButton
         Me.Label5 = New System.Windows.Forms.Label
-        Me.MultiTapBox = New System.Windows.Forms.CheckBox
         Me.LoopingBox = New System.Windows.Forms.CheckBox
         Me.Label6 = New System.Windows.Forms.Label
         Me.RadioButton3 = New System.Windows.Forms.RadioButton
         Me.RadioButton4 = New System.Windows.Forms.RadioButton
         Me.TextBox4 = New System.Windows.Forms.TextBox
-        Me.Label7 = New System.Windows.Forms.Label
+        Me.MultiTapBox = New System.Windows.Forms.CheckBox
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -174,20 +173,10 @@ Partial Class Dialog1
         Me.Label5.Text = "If there are multiple strings, separate them with commas. (Literal comma = \x{2c}" & _
             ")"
         '
-        'MultiTapBox
-        '
-        Me.MultiTapBox.AutoSize = True
-        Me.MultiTapBox.Location = New System.Drawing.Point(321, 116)
-        Me.MultiTapBox.Name = "MultiTapBox"
-        Me.MultiTapBox.Size = New System.Drawing.Size(67, 17)
-        Me.MultiTapBox.TabIndex = 11
-        Me.MultiTapBox.Text = "MultiTap"
-        Me.MultiTapBox.UseVisualStyleBackColor = True
-        '
         'LoopingBox
         '
         Me.LoopingBox.AutoSize = True
-        Me.LoopingBox.Location = New System.Drawing.Point(389, 116)
+        Me.LoopingBox.Location = New System.Drawing.Point(391, 114)
         Me.LoopingBox.Name = "LoopingBox"
         Me.LoopingBox.Size = New System.Drawing.Size(64, 17)
         Me.LoopingBox.TabIndex = 12
@@ -213,6 +202,7 @@ Partial Class Dialog1
         Me.RadioButton3.TabStop = True
         Me.RadioButton3.Text = "Output first item in mapping string"
         Me.RadioButton3.UseVisualStyleBackColor = True
+        Me.RadioButton3.Visible = False
         '
         'RadioButton4
         '
@@ -224,6 +214,7 @@ Partial Class Dialog1
         Me.RadioButton4.TabStop = True
         Me.RadioButton4.Text = "Output this text:"
         Me.RadioButton4.UseVisualStyleBackColor = True
+        Me.RadioButton4.Visible = False
         '
         'TextBox4
         '
@@ -231,17 +222,18 @@ Partial Class Dialog1
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Size = New System.Drawing.Size(124, 20)
         Me.TextBox4.TabIndex = 16
+        Me.TextBox4.Visible = False
         '
-        'Label7
+        'MultiTapBox
         '
-        Me.Label7.AutoSize = True
-        Me.Label7.ForeColor = System.Drawing.Color.Red
-        Me.Label7.Location = New System.Drawing.Point(322, 131)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(128, 13)
-        Me.Label7.TabIndex = 17
-        Me.Label7.Text = "Please uncheck MultiTap"
-        Me.Label7.Visible = False
+        Me.MultiTapBox.AutoSize = True
+        Me.MultiTapBox.Location = New System.Drawing.Point(319, 114)
+        Me.MultiTapBox.Name = "MultiTapBox"
+        Me.MultiTapBox.Size = New System.Drawing.Size(67, 17)
+        Me.MultiTapBox.TabIndex = 17
+        Me.MultiTapBox.Text = "MultiTap"
+        Me.MultiTapBox.UseVisualStyleBackColor = True
+        Me.MultiTapBox.Visible = False
         '
         'Dialog1
         '
@@ -250,12 +242,12 @@ Partial Class Dialog1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(801, 186)
+        Me.Controls.Add(Me.MultiTapBox)
         Me.Controls.Add(Me.TextBox4)
         Me.Controls.Add(Me.RadioButton4)
         Me.Controls.Add(Me.RadioButton3)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.LoopingBox)
-        Me.Controls.Add(Me.MultiTapBox)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Cancel_Button)
@@ -263,7 +255,6 @@ Partial Class Dialog1
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TextBox1)
-        Me.Controls.Add(Me.Label7)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -289,12 +280,11 @@ Partial Class Dialog1
     Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
     Friend WithEvents RadioButton2 As System.Windows.Forms.RadioButton
     Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents MultiTapBox As System.Windows.Forms.CheckBox
     Friend WithEvents LoopingBox As System.Windows.Forms.CheckBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents RadioButton3 As System.Windows.Forms.RadioButton
     Friend WithEvents RadioButton4 As System.Windows.Forms.RadioButton
     Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
-    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents MultiTapBox As System.Windows.Forms.CheckBox
 
 End Class
